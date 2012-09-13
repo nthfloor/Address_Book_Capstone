@@ -2,6 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Sorted array implementation of DataStructure
+ * 
+ * @author Nathan Floor
+ * @author Ryan Saunders
+ */
 public class SortedArray extends DataStructure {
 	//instance variables
 	//table variables
@@ -20,16 +26,27 @@ public class SortedArray extends DataStructure {
 	//timer variables
 	private double startTime;
 	private double currentTime;
-	
+
+	/**
+	 * Creates a new sorted array with starting size of 1000.
+	 */	
 	public SortedArray() {
 		totalNumRecords = 1000;
 		progressThread = new Monitor(this);
 	}
-	
+
+	/**
+	 * Creates a new sorted array.
+	 * 
+	 * @param size - the starting size of the array
+	 */	
 	public SortedArray(int size) {
 		sortedRecords = new Record[size];
-		totalNumRecords = size;		
-	}
+		totalNumRecords = size;
+	}
+	/**
+	 * Walks through the sorted array.
+	 */
 
 	@Override
 	public void walkThrough() {
@@ -118,10 +135,19 @@ public class SortedArray extends DataStructure {
 
 			try {
 				sortedRecords[numberOfRecs] = new Record(split);
-			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+			 catch (IncorrectNumberOfFieldsException e) { // when split contains too few elements
 				System.out.println("############################");
-				System.out.println("not correct number of fields (or records)");
+				System.out.println("not correct number of fields");
 				System.out.println("############################");
+			}  catch (ArrayIndexOutOfBoundsException e) {  // when sortedRecords too small to hold another record
+				
+//				System.out.println("############################");
+//				System.out.println("not correct number of records");
+//				System.out.println("############################");
+				
+				sortedRecords = extendArray(sortedRecords);
+				sortedRecords[numberOfRecs] = new Record (split);;
 			}
 
 			// weird way of commenting out code
@@ -144,7 +170,17 @@ public class SortedArray extends DataStructure {
 		}catch(Exception e){e.printStackTrace();}		
 	}
 
-	//returns the progress of either loading, walk-through,or searching through array
+private Record[] extendArray(Record[] array) {
+		Record[] extendedArray = new Record[array.length * 2];
+		
+		for (int i = 0; i < array.length; i++) {
+			extendedArray[i] = new Record (array[i]);
+		}
+		
+		return extendedArray;
+	}
+
+		//returns the progress of either loading, walk-through,or searching through array
 	@Override
 	synchronized double getProgress() {
 		if(isLoading)
