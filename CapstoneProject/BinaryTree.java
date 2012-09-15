@@ -1,10 +1,10 @@
 import java.io.IOException;
 
 /**
- * Record calss for address book entries
+ * Binary tree implementation of DataStructure
  * 
- * Nathan Floor
- * Ryan Saunders
+ * @author Nathan Floor
+ * @author Ryan Saunders
  *
  */
 
@@ -13,46 +13,22 @@ public class BinaryTree extends DataStructure{
 	//instance variables
 	Record root;
 	
-	//progress variables
-	private Monitor progressThread;
-	private volatile int numberOfRecs;
-	private int totalNumberOfRecs;
-	private volatile int walkCounter = 0;
-	private volatile int searchCounter = 0;
-	private boolean isLoading = false;
-	private boolean isWalking = false;
-	private boolean isRandomAccess = false;
-
-	//timing variables
-	private double startTime;
-	private double currentTime;
-	
-	public BinaryTree(){
-		
+	public BinaryTree(int numRecords){
+		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
 
 	@Override
 	void loadData(String filename) throws IOException {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
 
 	@Override
 	void walkThrough() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
 
 	@Override
 	String getRecord(String key) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
-
-	@Override
-	double getProgress() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

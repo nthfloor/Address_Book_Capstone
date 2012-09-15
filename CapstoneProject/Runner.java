@@ -4,32 +4,34 @@ import java.io.IOException;
 /**
  * Driver class for Address Book(Capstone project)
  * 
- * Nathan Floor
- * Ryan Saunders
+ * @author Nathan Floor
+ * @author Ryan Saunders
  * 
  */
 
 public class Runner {
+	private static final String DEFAULT_SEARCH_ITEM = "734-665-7833";//#775
+
 	//instance variables
 	static Scanner input; //for user keyboard input
 	static DataStructure listOfRecords;
-	
+
 	static String filename;
 	static int numRecords;
-	
-	public static void main(String[] args) {		
-		input = new Scanner(System.in);		
+
+	public static void main(String[] args) {
+		input = new Scanner(System.in);
 		filename = args[0];
 		numRecords = Integer.parseInt(args[1]);
-		
+
 		//start menu system
-		selectDataStructure();		
+		selectDataStructure();
 	}
 
 	//main menu
-	private static void selectDataStructure(){
+	private static void selectDataStructure() {
 		listOfRecords = null;
-		while(true){
+		while (true) {
 			//display menu options
 			System.out.println("");
 			System.out.println("Select a Data Structure");
@@ -38,37 +40,66 @@ public class Runner {
 			System.out.println("2. Hashtable with chaining");
 			System.out.println("3. Binary Tree");
 			System.out.println("4. Back");
-			System.out.print(">>");		
+			System.out.print(">>");
 
 			//receive user input
 			int userSelection = input.nextInt();
-			switch (userSelection){
+			switch (userSelection) {
 			case 1:
 				//use sorted array DS
 				listOfRecords = new SortedArray(numRecords);
-				System.out.println("Loading file...");
-				try{
-					listOfRecords.loadData(filename);
-				}catch(IOException e){e.printStackTrace();}
+				loadData();
 				mainMenu();
+				break;
 			case 2:
 				//use hash-table DS
-				System.out.println("Loading file...");
-				listOfRecords = new MyHashtable(numRecords,filename);
+				listOfRecords = new MyHashtable(numRecords);
+				loadData();
 				mainMenu();
+				break;
 			case 3:
-				//use Binary tree DS
-				//System.out.println("Loading file into program...");
-				System.out.println("Not implemented yet...");
+				//use binary-tree
+				// TODO this must still be implemented
+				listOfRecords = new BinaryTree(numRecords);
+				loadData();
 				mainMenu();
+				break;
 			default:
 				System.out.println("Please select one of the options listed above.");
-			}				
+				break;
+			}
 		}
 	}
 
-	private static void mainMenu(){
-		while(true){
+	private synchronized static void loadData() {
+		Monitor progressThread = new Monitor(listOfRecords);
+		progressThread.start();
+
+		System.out.println("Loading file...");
+		long startTime = System.currentTimeMillis();
+		try {
+			listOfRecords.loadData(filename);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IncorrectNumberOfFieldsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			long endTime = System.currentTimeMillis();
+			progressThread.interrupt();
+			try {
+				progressThread.join();
+				System.out.println("Data loaded successfully. Time: "+ (endTime-startTime)+" milliseconds");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void mainMenu() {
+		while (true) {
 			System.out.println("");
 			System.out.println("Main Menu:");
 			//System.out.println("");
@@ -78,36 +109,88 @@ public class Runner {
 			System.out.println("2. Perform sequencial walkthrough");
 			System.out.println("3. Perform Random Access Search");
 			System.out.println("4. Exit");
-			System.out.print(">>");	
+			System.out.print(">>");
 
 			//receive user input
 			int userSelection = input.nextInt();
-			switch (userSelection){
+			switch (userSelection) {
 			case 1:
 				//select a new DS
 				selectDataStructure();
 				break;
 			case 2:
 				//perform sequential walk-through of DS
-				System.out.println("Performing sequencial walkthrough...");
-				listOfRecords.walkThrough();
+				walkThrough();
 				break;
 			case 3:
 				//execute random access operation
-				//String searchItem = input.next();
-				String searchPhone = "734-665-7833";//#775
-				
-				System.out.println("Performing random access for "+searchPhone+"...");
-				String tempName = listOfRecords.getRecord(searchPhone);//search for phone number since unique
-				System.out.println(tempName);
+				try {
+					getRecord(DEFAULT_SEARCH_ITEM);
+				} catch (RecordNotFoundException e) {
+					System.out.println("Could not find the requested record.");;
+				}
 				break;
 			case 4:
 				System.out.println("Exiting program...");
-				listOfRecords = null;
 				System.exit(0);
 			default:
 				System.out.println("Please select one of the options listed above.");
 			}//end switch
 		}//end while
+	}
+
+	private static void walkThrough() {
+		Monitor progressThread = new Monitor(listOfRecords);
+		progressThread.start();
+
+		System.out.println("Performing sequencial walkthrough...");
+		
+		long startTime = System.currentTimeMillis();
+		long endTime = 0;
+		listOfRecords.walkThrough();
+		endTime = System.currentTimeMillis();
+		
+		progressThread.interrupt();
+		try {
+			progressThread.join();
+			System.out.println("Data walk-through complete. Time: "+ (endTime-startTime)+" milliseconds");
+		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void getRecord(String searchPhone) throws RecordNotFoundException {
+		Monitor progressThread = new Monitor(listOfRecords);
+		progressThread.start();
+		
+		System.out.println("Performing random access for " + searchPhone + "...");
+
+		boolean recFound = false;
+		long startTime = System.currentTimeMillis();
+		long endTime = 0;
+		try {
+			String tempName = listOfRecords.getRecord(searchPhone);//search for phone number since unique
+			System.out.println(tempName);
+			endTime = System.currentTimeMillis();
+			recFound = true;
+		} finally {
+			if (!recFound){
+				}
+			progressThread.interrupt();
+			try {
+				progressThread.join();
+				
+				if (recFound){
+					System.out.println("Record found. Time: "+ (endTime-startTime)+" milliseconds");
+				} else {
+					System.out.println("Record not found. Time: " + (endTime- startTime + " milliseconds"));
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

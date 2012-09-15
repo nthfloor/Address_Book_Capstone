@@ -4,8 +4,8 @@ import java.util.*;
 /**
  * Hash-table implementation with chaining
  * 
- * Nathan Floor
- * Ryan Saunders 
+ * @author Nathan Floor
+ * @author Ryan Saunders 
  *
  */
 public class MyHashtable extends DataStructure{
@@ -13,21 +13,7 @@ public class MyHashtable extends DataStructure{
 	//table variables
 	private LinkedList<Record>[] data;
 	private int tableSize;
-	private int loadFactor;	
-	
-	//progress variables
-	private Monitor progressThread;
-	private volatile int numberOfRecs;
-	private int totalNumberOfRecs;
-	private volatile int walkCounter = 0;
-	private volatile int searchCounter = 0;
-	private boolean isLoading = false;
-	private boolean isWalking = false;
-	private boolean isRandomAccess = false;
-	
-	//timing variables
-	private double startTime;
-	private double currentTime;
+	private int loadFactor;
 	
 	@SuppressWarnings("unchecked")
 	public MyHashtable(){
@@ -38,34 +24,23 @@ public class MyHashtable extends DataStructure{
 		tableSize = 1000;
 		numberOfRecs = 0;
 		loadFactor = numberOfRecs/tableSize;
-		progressThread = new Monitor(this);
 	}
 	
 	public MyHashtable(int size){
-		this();		
-		totalNumberOfRecs = size;		
+		this();
+		totalNumberOfRecs = size;
 	}
 	
+	/*
 	public MyHashtable(int size, String filename){
 		this(size);		
 		loadData(filename);
 	}
-	
-	//returns the progress of either loading, walk-through,or searching through table
-	public synchronized double getProgress(){
-		if(isLoading)
-			return numberOfRecs/(double)totalNumberOfRecs;
-		else if(isWalking)
-			return walkCounter/(double)totalNumberOfRecs;
-		else if(isRandomAccess)
-			return searchCounter/(double)totalNumberOfRecs;
-		else
-			return 0.0;
-	}
+	*/
 	
 	//load csv file into hash-table
-	public void loadData(String filename){
-		try{
+	@Override
+	public void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException{
 			isLoading = true;
 			isWalking = false;
 			isRandomAccess = false;
@@ -74,60 +49,46 @@ public class MyHashtable extends DataStructure{
 
 			String newline = "";
 			//loop through all records and add them to hashtable
-			progressThread.start();
 			while((newline = input.readLine()) != null){
 				synchronized(this){
 					numberOfRecs++;
 				}
 				resizeTable();
-				newRecord = newline.split(";");				
+				newRecord = newline.split(";");
 				add(new Record(newRecord)); // add to hashtable
-			}			
-			progressThread.interrupt();
-			progressThread.join();
-			//System.out.println("Finished loading in data successfully.");
-		}catch(Exception e){e.printStackTrace();}
+			}
+			
+			input.close();
 		
 	}
 
 	//perform walk-through all, with timers
-	public void walkThrough(){		
+	@SuppressWarnings("unused")
+	@Override
+	public void walkThrough(){
 		isLoading = false;
 		isWalking = true;
-		isRandomAccess = false;		
-		progressThread = new Monitor(this);
-		progressThread.start();
+		isRandomAccess = false;
 		walkCounter = 0;
-		startTime = System.currentTimeMillis();		
-		@SuppressWarnings("unused")
+		
 		String temp = "";
 		for(int i=0;i<tableSize;i++){
 			for(Record n:data[i]){
 				synchronized(this){
 					walkCounter++;
 				}
-				temp = n.toString();				
-			}			
+				temp = n.toString();
+			}
 		}
-		//System.out.println(temp.toString());
-		currentTime = System.currentTimeMillis();
-		progressThread.interrupt();//stop progress thread
-		try{
-			progressThread.join();
-		}catch(Exception e){e.printStackTrace();}
-			
-		System.out.println("Walkthrough completed. Time: "+(currentTime-startTime)+" seconds");
 	}
 	
 	//return random access to a record, with timers 
-	public String getRecord(String key){
+	@Override
+	public String getRecord(String key) throws RecordNotFoundException{
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
-		progressThread = new Monitor(this);
-		progressThread.start();
 		searchCounter = 0;
-		startTime = System.currentTimeMillis();
 		int code = getHash(key);
 		
 		for(Record rec : data[code]){
@@ -136,30 +97,22 @@ public class MyHashtable extends DataStructure{
 			}
 			
 			if(rec.getKey().equals(key)){
-				currentTime = System.currentTimeMillis();
-				progressThread.interrupt();
-				try{
-					progressThread.join();//wait for progress thread to finish
-				}catch(Exception e){e.printStackTrace();}
-				System.out.println("Random Access completed. Time: "+(currentTime-startTime)+" seconds");				
-				return rec.toString();	
+				return rec.toString();
 			}
 		}
-		currentTime = System.currentTimeMillis();
-		progressThread.interrupt();
-		try{
-			progressThread.join();
-		}catch(Exception e){e.printStackTrace();}
-		return "No record found. Time: "+(currentTime-startTime)+" seconds";
+		
+		throw new RecordNotFoundException();
 	}
 	
 	//add supplied record to a hash-table
 	public void add(Record newRec){
 		int code = getHash(newRec.getKey()); // compute hash-code for indexing
+		
+		// TODO what is this for?
 		if(newRec.getKey().equals("615-883-8408"))
 			newRec.toString();
 		
-		data[code].addFirst(newRec);		
+		data[code].addFirst(newRec);
 	}
 	
 	//resize table to ensure good load factoring, dynamic resizing
@@ -178,9 +131,9 @@ public class MyHashtable extends DataStructure{
 				//copy data from data table into temp table
 				for(Record n : data[i]){
 					tempCode = getHash(n.getKey());
-					temp[tempCode].addFirst(n);					
-				}				
-			}			
+					temp[tempCode].addFirst(n);
+				}
+			}
 			data = temp; //make temp table the new data table
 			tableSize = tableSize*2;
 		}		
