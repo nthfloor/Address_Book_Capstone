@@ -17,7 +17,7 @@ public class MyHashtable extends DataStructure{
 	private int loadFactor;
 	
 	@SuppressWarnings("unchecked")
-	private MyHashtable(){
+	public MyHashtable(){
 		data = new LinkedList[1000];
 		for(int i=0;i<1000;i++)
 			data[i] = new LinkedList<Record>();//initializing array of records

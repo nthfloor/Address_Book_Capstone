@@ -12,6 +12,25 @@ public class Record {
 	String firstname, lastname, company, address, city, country, state, ZIP,
 			phone, fax, email, web;
 
+	public Record(String[] args) throws IncorrectNumberOfFieldsException {
+		if (args.length == 12){
+			firstname = args[0];
+			lastname = args[1];
+			company = args[2];
+			address = args[3];
+			city = args[4];
+			country = args[5];
+			state = args[6];
+			ZIP = args[7];
+			phone = args[8];
+			fax = args[9];
+			email = args[10];
+			web = args[11];
+		} else {
+			throw new IncorrectNumberOfFieldsException();
+		}
+	}
+
 	/**
 	 * Copy constructor
 	 * 
@@ -30,25 +49,6 @@ public class Record {
 		fax = r.fax;
 		email = r.email;
 		web = r.web;
-	}
-
-	public Record(String[] args) throws IncorrectNumberOfFieldsException {
-		if (args.length == 12){
-			firstname = args[0];
-			lastname = args[1];
-			company = args[2];
-			address = args[3];
-			city = args[4];
-			country = args[5];
-			state = args[6];
-			ZIP = args[7];
-			phone = args[8];
-			fax = args[9];
-			email = args[10];
-			web = args[11];
-		} else {
-			throw new IncorrectNumberOfFieldsException();
-		}
 	}
 
 	public String getKey() {
