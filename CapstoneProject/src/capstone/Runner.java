@@ -14,11 +14,11 @@ public class Runner {
 	private static final String DEFAULT_SEARCH_ITEM = "734-665-7833";//#735
 
 	//instance variables
-	static Scanner input; //for user keyboard input
-	static DataStructure listOfRecords;
+	private static Scanner input; //for user keyboard input
+	private static DataStructure listOfRecords;
 
-	static String filename;
-	static int numRecords;
+	private static String filename;
+	private static int numRecords;
 
 	public static void main(String[] args) {
 		input = new Scanner(System.in);
@@ -49,20 +49,20 @@ public class Runner {
 			case 1:
 				//use sorted array DS
 				listOfRecords = new SortedArray(numRecords);
-				loadData();
+				loadData(listOfRecords, filename);
 				mainMenu();
 				break;
 			case 2:
 				//use hash-table DS
 				listOfRecords = new MyHashtable(numRecords);
-				loadData();
+				loadData(listOfRecords, filename);
 				mainMenu();
 				break;
 			case 3:
 				//use binary-tree
 				// TODO this must still be implemented
 				listOfRecords = new BinaryTree(numRecords);
-				loadData();
+				loadData(listOfRecords, filename);
 				mainMenu();
 				break;
 			default:
@@ -72,7 +72,7 @@ public class Runner {
 		}
 	}
 
-	private synchronized static void loadData() {
+	public synchronized static void loadData(DataStructure listOfRecords, String filename) {
 		Monitor progressThread = new Monitor(listOfRecords);
 		progressThread.start();
 
@@ -121,12 +121,12 @@ public class Runner {
 				break;
 			case 2:
 				//perform sequential walk-through of DS
-				walkThrough();
+				walkThrough(listOfRecords);
 				break;
 			case 3:
 				//execute random access operation
 				try {
-					getRecord(DEFAULT_SEARCH_ITEM);
+					getRecord(listOfRecords, DEFAULT_SEARCH_ITEM);
 				} catch (RecordNotFoundException e) {
 					System.out.println("Could not find the requested record.");;
 				}
@@ -140,7 +140,7 @@ public class Runner {
 		}//end while
 	}
 
-	private static void walkThrough() {
+	public static void walkThrough(DataStructure listOfRecords) {
 		Monitor progressThread = new Monitor(listOfRecords);
 		progressThread.start();
 
@@ -162,7 +162,7 @@ public class Runner {
 		}
 	}
 
-	private static void getRecord(String searchPhone) throws RecordNotFoundException {
+	public static void getRecord(DataStructure listOfRecords, String searchPhone) throws RecordNotFoundException {
 		Monitor progressThread = new Monitor(listOfRecords);
 		progressThread.start();
 		
