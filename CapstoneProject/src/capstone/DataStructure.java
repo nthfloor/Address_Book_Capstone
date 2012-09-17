@@ -1,4 +1,5 @@
 package capstone;
+
 import java.io.IOException;
 
 /**
@@ -6,11 +7,11 @@ import java.io.IOException;
  * 
  * @author Nathan Floor
  * @author Ryan Saunders
- *
+ * 
  */
 
-public abstract class DataStructure {	
-	
+public abstract class DataStructure {
+
 	//progress variables
 	protected volatile int numberOfRecs = 0;
 	protected int totalNumberOfRecs;
@@ -28,12 +29,12 @@ public abstract class DataStructure {
 	 * @throws IncorrectNumberOfFieldsException if the file does not contain the correct number of columns/fields.
 	 */
 	public abstract void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException;
-	
+
 	/**
 	 * Perform walk-through all, with timers
 	 */
 	public abstract void walkThrough();
-	
+
 	/**
 	 * Returns a record by using random access, with timers.
 	 * 
@@ -42,20 +43,20 @@ public abstract class DataStructure {
 	 * @throws RecordNotFoundException if no record is found
 	 */
 	public abstract Record getRecord(String key) throws RecordNotFoundException;
-	
+
 	/**
 	 * Returns the progress of either loading, walk-through,or searching through table.
 	 * 
 	 * @return a number between 0.0 and 1.0 indicating progress
 	 */
-	public synchronized double getProgress(){
-			if(isLoading)
-				return numberOfRecs/(double)totalNumberOfRecs;
-			else if(isWalking)
-				return walkCounter/(double)totalNumberOfRecs;
-			else if(isRandomAccess)
-				return searchCounter/(double)totalNumberOfRecs;
-			else
-				return 0.0;
-		}
+	public synchronized double getProgress() {
+		if (isLoading)
+			return numberOfRecs / (double) totalNumberOfRecs;
+		else if (isWalking)
+			return walkCounter / (double) totalNumberOfRecs;
+		else if (isRandomAccess)
+			return searchCounter / (double) totalNumberOfRecs;
+		else
+			return 0.0;
+	}
 }

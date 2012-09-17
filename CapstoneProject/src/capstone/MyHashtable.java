@@ -1,4 +1,5 @@
 package capstone;
+
 import java.io.*;
 import java.util.*;
 
@@ -6,146 +7,146 @@ import java.util.*;
  * Hash-table implementation with chaining
  * 
  * @author Nathan Floor
- * @author Ryan Saunders 
- *
+ * @author Ryan Saunders
+ * 
  */
-public class MyHashtable extends DataStructure{
+public class MyHashtable extends DataStructure {
 	//instance variables
 	//table variables
 	private LinkedList<Record>[] data;
 	private int tableSize;
 	private int loadFactor;
-	
+
 	@SuppressWarnings("unchecked")
-	public MyHashtable(){
+	public MyHashtable() {
 		data = new LinkedList[1000];
-		for(int i=0;i<1000;i++)
+		for (int i = 0; i < 1000; i++)
 			data[i] = new LinkedList<Record>();//initializing array of records
-		
+
 		tableSize = 1000;
 		numberOfRecs = 0;
-		loadFactor = numberOfRecs/tableSize;
+		loadFactor = numberOfRecs / tableSize;
 	}
-	
-	public MyHashtable(int size){
+
+	public MyHashtable(int size) {
 		this();
 		totalNumberOfRecs = size;
 	}
-	
+
 	/*
-	public MyHashtable(int size, String filename){
-		this(size);		
-		loadData(filename);
-	}
-	*/
-	
+	 * public MyHashtable(int size, String filename){
+	 * this(size);
+	 * loadData(filename);
+	 * }
+	 */
+
 	//load csv file into hash-table
 	@Override
-	public void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException{
-			isLoading = true;
-			isWalking = false;
-			isRandomAccess = false;
-			BufferedReader input = new BufferedReader(new FileReader(filename));
-			String[] newRecord;
+	public void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException {
+		isLoading = true;
+		isWalking = false;
+		isRandomAccess = false;
+		BufferedReader input = new BufferedReader(new FileReader(filename));
+		String[] newRecord;
 
-			String newline = "";
-			//loop through all records and add them to hashtable
-			while((newline = input.readLine()) != null){
-				synchronized(this){
-					numberOfRecs++;
-				}
-				resizeTable();
-				newRecord = newline.split(";");
-				add(new Record(newRecord)); // add to hashtable
+		String newline = "";
+		//loop through all records and add them to hashtable
+		while ((newline = input.readLine()) != null) {
+			synchronized (this) {
+				numberOfRecs++;
 			}
-			
-			input.close();
-		
+			resizeTable();
+			newRecord = newline.split(";");
+			add(new Record(newRecord)); // add to hashtable
+		}
+
+		input.close();
+
 	}
 
 	//perform walk-through all, with timers
 	@SuppressWarnings("unused")
 	@Override
-	public void walkThrough(){
+	public void walkThrough() {
 		isLoading = false;
 		isWalking = true;
 		isRandomAccess = false;
 		walkCounter = 0;
-		
+
 		String temp = "";
-		for(int i=0;i<tableSize;i++){
-			for(Record n:data[i]){
-				synchronized(this){
+		for (int i = 0; i < tableSize; i++) {
+			for (Record n : data[i]) {
+				synchronized (this) {
 					walkCounter++;
 				}
 				temp = n.toString();
 			}
 		}
 	}
-	
+
 	//return random access to a record, with timers 
 	@Override
-	public Record getRecord(String key) throws RecordNotFoundException{
+	public Record getRecord(String key) throws RecordNotFoundException {
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
 		searchCounter = 0;
 		int code = getHash(key);
-		
-		for(Record rec : data[code]){
-			synchronized(this){
+
+		for (Record rec : data[code]) {
+			synchronized (this) {
 				searchCounter++;
 			}
-			
-			if(rec.getKey().equals(key)){
+
+			if (rec.getKey().equals(key)) {
 				return rec;
 			}
 		}
-		
+
 		throw new RecordNotFoundException();
 	}
-	
+
 	//add supplied record to a hash-table
-	public void add(Record newRec){
+	public void add(Record newRec) {
 		int code = getHash(newRec.getKey()); // compute hash-code for indexing
-		
+
 		// TODO what is this for?
-		if(newRec.getKey().equals("615-883-8408"))
+		if (newRec.getKey().equals("615-883-8408"))
 			newRec.toString();
-		
+
 		data[code].addFirst(newRec);
 	}
-	
+
 	//resize table to ensure good load factoring, dynamic resizing
 	@SuppressWarnings("unchecked")
-	private void resizeTable(){
-		loadFactor = numberOfRecs/tableSize;
-		
+	private void resizeTable() {
+		loadFactor = numberOfRecs / tableSize;
+
 		//if load-factor is too large then enlarge table(double its size)
-		if(loadFactor > 0.75){
-			LinkedList<Record>[] temp = new LinkedList[tableSize*2];
-			for(int i=0;i<(tableSize*2);i++)
+		if (loadFactor > 0.75) {
+			LinkedList<Record>[] temp = new LinkedList[tableSize * 2];
+			for (int i = 0; i < (tableSize * 2); i++)
 				temp[i] = new LinkedList<Record>();
-			
+
 			int tempCode = 0;
-			for(int i=0;i<tableSize;i++){
+			for (int i = 0; i < tableSize; i++) {
 				//copy data from data table into temp table
-				for(Record n : data[i]){
+				for (Record n : data[i]) {
 					tempCode = getHash(n.getKey());
 					temp[tempCode].addFirst(n);
 				}
 			}
 			data = temp; //make temp table the new data table
-			tableSize = tableSize*2;
-		}		
+			tableSize = tableSize * 2;
+		}
 	}
-	
-	public int getTableSize(){
+
+	public int getTableSize() {
 		return tableSize;
 	}
-	
+
 	//return hash code for the supplied hash code
-	private int getHash(String key){
-		return Math.abs(key.hashCode()+key.length())%tableSize;
+	private int getHash(String key) {
+		return Math.abs(key.hashCode() + key.length()) % tableSize;
 	}
 }

@@ -1,4 +1,5 @@
 package capstone;
+
 /**
  * Exception thrown when requested record is not found.
  * 

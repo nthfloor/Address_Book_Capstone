@@ -32,26 +32,27 @@ public class AddressBookWindow extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param comboItems 
-	 * @param searchBtnListener 
 	 * 
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * @param comboItems
+	 * @param searchBtnListener
+	 * 
+	 * @throws UnsupportedLookAndFeelException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	public AddressBookWindow(ItemListener comboListener, Object[] comboItems, ItemListener walkBtnListener, ItemListener searchBtnListener) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
 		contentPane = new JPanel();
@@ -59,28 +60,28 @@ public class AddressBookWindow extends JFrame {
 		setContentPane(contentPane);
 
 		contentPane.setLayout(new MigLayout("", "[grow]", "[][grow]"));
-		
+
 		JComboBox comboBox = new JComboBox(comboItems);
 		comboBox.addItemListener(comboListener);
 		contentPane.add(comboBox, "cell 0 0,growx");
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, "cell 0 1,grow");
-		
+
 		JPanel walkThroughPanel = new JPanel();
 		tabbedPane.addTab("Walk through", null, walkThroughPanel, null);
-		
+
 		JToggleButton tglbtnWalkThrough = new JToggleButton("Walk through");
 		tglbtnWalkThrough.addItemListener(walkBtnListener);
 		walkThroughPanel.add(tglbtnWalkThrough);
-		
+
 		JPanel searchPanel = new JPanel();
 		tabbedPane.addTab("Search", null, searchPanel, null);
-		
+
 		searchTextField = new JTextField();
 		searchPanel.add(searchTextField);
 		searchTextField.setColumns(10);
-		
+
 		JToggleButton tglbtnSearch = new JToggleButton("Search");
 		tglbtnSearch.addItemListener(searchBtnListener);
 		searchPanel.add(tglbtnSearch);

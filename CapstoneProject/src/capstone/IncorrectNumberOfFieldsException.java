@@ -1,4 +1,5 @@
 package capstone;
+
 /**
  * Exception thrown when the incorrect number of fields are placed into a record.
  * 

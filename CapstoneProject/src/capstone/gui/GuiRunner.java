@@ -42,7 +42,7 @@ public class GuiRunner {
 					ItemListener comboListener = new ComboListener();
 					ItemListener walkBtnListener = new WalkBtnListener();
 					ItemListener searchBtnListener = new SearchBtnListener();
-					
+
 					frame = new AddressBookWindow(comboListener, COMBO_ITEMS, walkBtnListener, searchBtnListener);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -70,14 +70,14 @@ public class GuiRunner {
 				} else {
 					return;
 				}
-				
+
 				Runner.loadData(listOfRecords, FILE_NAME);
 			}
 		}
 
 	}
 
-	private static class WalkBtnListener implements ItemListener{
+	private static class WalkBtnListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -85,8 +85,8 @@ public class GuiRunner {
 			}
 		}
 	}
-	
-	private static class SearchBtnListener implements ItemListener{
+
+	private static class SearchBtnListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {

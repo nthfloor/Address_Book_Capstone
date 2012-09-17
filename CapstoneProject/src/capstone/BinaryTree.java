@@ -1,4 +1,5 @@
 package capstone;
+
 import java.io.IOException;
 
 /**
@@ -6,15 +7,15 @@ import java.io.IOException;
  * 
  * @author Nathan Floor
  * @author Ryan Saunders
- *
+ * 
  */
 
-public class BinaryTree extends DataStructure{
-	
+public class BinaryTree extends DataStructure {
+
 	//instance variables
 	Record root;
-	
-	public BinaryTree(int numRecords){
+
+	public BinaryTree(int numRecords) {
 		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
 

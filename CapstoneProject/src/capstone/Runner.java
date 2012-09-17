@@ -1,4 +1,5 @@
 package capstone;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -91,7 +92,7 @@ public class Runner {
 			progressThread.interrupt();
 			try {
 				progressThread.join();
-				System.out.println("Data loaded successfully. Time: "+ (endTime-startTime)+" milliseconds");
+				System.out.println("Data loaded successfully. Time: " + (endTime - startTime) + " milliseconds");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,7 +129,8 @@ public class Runner {
 				try {
 					getRecord(listOfRecords, DEFAULT_SEARCH_ITEM);
 				} catch (RecordNotFoundException e) {
-					System.out.println("Could not find the requested record.");;
+					System.out.println("Could not find the requested record.");
+					;
 				}
 				break;
 			case 4:
@@ -145,17 +147,17 @@ public class Runner {
 		progressThread.start();
 
 		System.out.println("Performing sequencial walkthrough...");
-		
+
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 		listOfRecords.walkThrough();
 		endTime = System.currentTimeMillis();
-		
+
 		progressThread.interrupt();
 		try {
 			progressThread.join();
-			System.out.println("Data walk-through complete. Time: "+ (endTime-startTime)+" milliseconds");
-		
+			System.out.println("Data walk-through complete. Time: " + (endTime - startTime) + " milliseconds");
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -165,7 +167,7 @@ public class Runner {
 	public static void getRecord(DataStructure listOfRecords, String searchPhone) throws RecordNotFoundException {
 		Monitor progressThread = new Monitor(listOfRecords);
 		progressThread.start();
-		
+
 		System.out.println("Performing random access for " + searchPhone + "...");
 
 		boolean recFound = false;
@@ -177,16 +179,16 @@ public class Runner {
 			endTime = System.currentTimeMillis();
 			recFound = true;
 		} finally {
-			if (!recFound){
-				}
+			if (!recFound) {
+			}
 			progressThread.interrupt();
 			try {
 				progressThread.join();
-				
-				if (recFound){
-					System.out.println("Record found. Time: "+ (endTime-startTime)+" milliseconds");
+
+				if (recFound) {
+					System.out.println("Record found. Time: " + (endTime - startTime) + " milliseconds");
 				} else {
-					System.out.println("Record not found. Time: " + (endTime- startTime + " milliseconds"));
+					System.out.println("Record not found. Time: " + (endTime - startTime + " milliseconds"));
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

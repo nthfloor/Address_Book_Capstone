@@ -1,4 +1,5 @@
 package capstone;
+
 /**
  * Record class for address book entries
  * 
@@ -13,7 +14,7 @@ public class Record {
 			phone, fax, email, web;
 
 	public Record(String[] args) throws IncorrectNumberOfFieldsException {
-		if (args.length == 12){
+		if (args.length == 12) {
 			firstname = args[0];
 			lastname = args[1];
 			company = args[2];
@@ -59,11 +60,11 @@ public class Record {
 	public String toString() {
 		return firstname + " " + lastname;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		Record rec = (Record) obj;
-		
+
 		return (firstname.equals(rec.firstname))
 				&& (lastname.equals(rec.lastname))
 				&& (company.equals(rec.company))
