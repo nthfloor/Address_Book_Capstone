@@ -29,10 +29,10 @@ public class Record {
 	}
 	
 	public String getKey(){
-		return phone;
+		return firstname;
 	}
 	
 	public String toString(){
-		return firstname + " " + lastname;
+		return firstname + " " + lastname + " " + phone;
 	}
 }
