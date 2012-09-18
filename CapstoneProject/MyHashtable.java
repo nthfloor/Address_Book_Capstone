@@ -25,10 +25,6 @@ public class MyHashtable extends DataStructure{
 	private boolean isWalking = false;
 	private boolean isRandomAccess = false;
 	
-	//timing variables
-	private double startTime;
-	private double currentTime;
-	
 	@SuppressWarnings("unchecked")
 	public MyHashtable(){
 		data = new LinkedList[1000];
@@ -97,8 +93,7 @@ public class MyHashtable extends DataStructure{
 		isRandomAccess = false;		
 		progressThread = new Monitor(this);
 		progressThread.start();
-		walkCounter = 0;
-		startTime = System.currentTimeMillis();		
+		walkCounter = 0;				
 		@SuppressWarnings("unused")
 		String temp = "";
 		for(int i=0;i<tableSize;i++){
@@ -109,14 +104,11 @@ public class MyHashtable extends DataStructure{
 				temp = n.toString();				
 			}			
 		}
-		//System.out.println(temp.toString());
-		currentTime = System.currentTimeMillis();
+		//System.out.println(temp.toString());		
 		progressThread.interrupt();//stop progress thread
 		try{
 			progressThread.join();
 		}catch(Exception e){e.printStackTrace();}
-			
-		System.out.println("Walkthrough completed. Time: "+(currentTime-startTime)+" seconds");
 	}
 	
 	//return random access to a record, with timers 
@@ -127,7 +119,6 @@ public class MyHashtable extends DataStructure{
 		progressThread = new Monitor(this);
 		progressThread.start();
 		searchCounter = 0;
-		startTime = System.currentTimeMillis();
 		int code = getHash(key);
 		
 		for(Record rec : data[code]){
@@ -135,22 +126,19 @@ public class MyHashtable extends DataStructure{
 				searchCounter++;
 			}
 			
-			if(rec.getKey().equals(key)){
-				currentTime = System.currentTimeMillis();
+			if(rec.getKey().equals(key)){				
 				progressThread.interrupt();
 				try{
 					progressThread.join();//wait for progress thread to finish
-				}catch(Exception e){e.printStackTrace();}
-				System.out.println("Random Access completed. Time: "+(currentTime-startTime)+" seconds");				
+				}catch(Exception e){e.printStackTrace();}				
 				return rec.toString();	
 			}
 		}
-		currentTime = System.currentTimeMillis();
 		progressThread.interrupt();
 		try{
 			progressThread.join();
 		}catch(Exception e){e.printStackTrace();}
-		return "No record found. Time: "+(currentTime-startTime)+" seconds";
+		return "No record found.";
 	}
 	
 	//add supplied record to a hash-table

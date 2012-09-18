@@ -16,10 +16,6 @@ public class SortedArray extends DataStructure {
 	private boolean isLoading = false;
 	private boolean isWalking = false;
 	private boolean isRandomAccess = false;
-
-	//timer variables
-	private double startTime;
-	private double currentTime;
 	
 	public SortedArray() {
 		totalNumRecords = 1000;
@@ -39,19 +35,16 @@ public class SortedArray extends DataStructure {
 		progressThread = new Monitor(this);
 		progressThread.start();		
 		walkCounter = 0;
-		startTime = System.currentTimeMillis();
 		for (int i = 0; i < numberOfRecs; i++) {
 			synchronized(this){
 				walkCounter++;
 			}
 			sortedRecords[i].toString();
 		}
-		currentTime = System.currentTimeMillis();
 		progressThread.interrupt();
 		try{
 			progressThread.join();
 		}catch(Exception e){e.printStackTrace();}
-		System.out.println("Walkthrough completed. Time: "+(currentTime-startTime)+" seconds");
 	}
 	
 	@Override
@@ -61,7 +54,6 @@ public class SortedArray extends DataStructure {
 		isRandomAccess = true;
 		progressThread = new Monitor(this);
 		progressThread.start();
-		startTime = System.currentTimeMillis();
 		int lower = 0;
 		int higher = sortedRecords.length;
 		int mid = higher / 2;
@@ -73,12 +65,10 @@ public class SortedArray extends DataStructure {
 			//System.out.println(mid);
 			
 			if (phone.equals(sortedRecords[mid].getKey())) {
-				currentTime = System.currentTimeMillis();
 				progressThread.interrupt();
 				try{
 					progressThread.join();
 				}catch(Exception e){e.printStackTrace();}
-				System.out.println("Random Access completed. Time: "+(currentTime-startTime)+" seconds");
 				return sortedRecords[mid].toString();
 			} else if (phone.compareTo(sortedRecords[mid].getKey()) < 0) {
 				higher = mid - 1;
@@ -93,7 +83,7 @@ public class SortedArray extends DataStructure {
 				try{
 					progressThread.join();
 				}catch(Exception e){e.printStackTrace();}
-				return "No record found. Time: "+(currentTime-startTime)+" seconds";
+				return "No record found.";
 			}
 		}
 	}

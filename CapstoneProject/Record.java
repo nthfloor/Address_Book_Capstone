@@ -33,6 +33,6 @@ public class Record {
 	}
 	
 	public String toString(){
-		return firstname + " " + lastname;
+		return firstname + " " + lastname + " " + phone;
 	}
 }

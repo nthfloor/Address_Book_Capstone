@@ -16,6 +16,10 @@ public class Runner {
 	
 	static String filename;
 	static int numRecords;
+
+	//timing variables
+	private static double startTime;
+	private static double currentTime;
 	
 	public static void main(String[] args) {		
 		input = new Scanner(System.in);		
@@ -90,16 +94,25 @@ public class Runner {
 			case 2:
 				//perform sequential walk-through of DS
 				System.out.println("Performing sequencial walkthrough...");
+				startTime = System.currentTimeMillis();
 				listOfRecords.walkThrough();
+				currentTime = System.currentTimeMillis();
+				System.out.println("Walkthrough completed. Time: "+(currentTime-startTime)/1000+" seconds");
 				break;
 			case 3:
 				//execute random access operation
 				//String searchItem = input.next();
+
+				//select a search option
 				String searchPhone = "734-665-7833";//#775
 				
 				System.out.println("Performing random access for "+searchPhone+"...");
+				startTime = System.currentTimeMillis();
 				String tempName = listOfRecords.getRecord(searchPhone);//search for phone number since unique
+				currentTime = System.currentTimeMillis();
 				System.out.println(tempName);
+				System.out.println("Random Access completed. Time: "+(currentTime-startTime)/1000+" seconds");				
+
 				break;
 			case 4:
 				System.out.println("Exiting program...");
