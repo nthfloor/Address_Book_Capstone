@@ -86,7 +86,7 @@ public class MyHashtable extends DataStructure {
 
 	//return random access to a record, with timers 
 	@Override
-	public Record getRecord(String key) throws RecordNotFoundException {
+	public ArrayList<Record> getRecord(String key) throws RecordNotFoundException {
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
@@ -99,7 +99,11 @@ public class MyHashtable extends DataStructure {
 			}
 
 			if (rec.getKeyValue().equals(key)) {
-				return rec;
+				//return list of records matching supplied key
+				ArrayList<Record> temp = new ArrayList<Record>();
+				temp.add(rec);
+				
+				return temp;
 			}
 		}
 

@@ -3,6 +3,7 @@ package capstone;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Sorted array implementation of DataStructure
@@ -84,7 +85,7 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
-	public Record getRecord(String key) throws RecordNotFoundException {				
+	public ArrayList<Record> getRecord(String key) throws RecordNotFoundException {				
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
@@ -101,8 +102,12 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
-				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found				
-					return sortedRecords[mid];
+				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found		
+					ArrayList<Record> temp = new ArrayList<Record>();
+					
+					temp.add(sortedRecords[mid]);
+					
+					return temp;
 				} else if (key.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
 					higher = mid - 1;
 				} else {

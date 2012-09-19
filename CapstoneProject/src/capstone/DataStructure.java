@@ -1,6 +1,7 @@
 package capstone;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Abstract class for all data structures
@@ -42,7 +43,7 @@ public abstract class DataStructure {
 	 * @return the requested record
 	 * @throws RecordNotFoundException if no record is found
 	 */
-	public abstract Record getRecord(String key) throws RecordNotFoundException;
+	public abstract ArrayList<Record> getRecord(String key) throws RecordNotFoundException;
 
 	/**
 	 * Returns the progress of either loading, walk-through,or searching through table.
