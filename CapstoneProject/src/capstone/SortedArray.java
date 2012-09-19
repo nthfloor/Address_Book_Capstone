@@ -84,27 +84,30 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
-	public Record getRecord(String phone) throws RecordNotFoundException {
+	public Record getRecord(String key) throws RecordNotFoundException {				
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
-		int lower = 0;
-		int higher = numberOfRecs - 1;
-		int mid;
+		
+		if(Record.currentSearchType == Record.SearchType.PHONE){
+			int lower = 0;
+			int higher = numberOfRecs - 1;
+			int mid;
 
-		while (lower != higher + 1) { // i.e. while lower <= higher
-			synchronized (this) {
-				searchCounter++;
-			}
+			while (lower != higher + 1) { // i.e. while lower <= higher
+				synchronized (this) {
+					searchCounter++;
+				}
 
-			mid = (higher + lower) / 2;
+				mid = (higher + lower) / 2;
 
-			if (phone.equals(sortedRecords[mid].getKeyValue())) { // record found				
-				return sortedRecords[mid];
-			} else if (phone.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
-				higher = mid - 1;
-			} else {
-				lower = mid + 1;
+				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found				
+					return sortedRecords[mid];
+				} else if (key.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
+					higher = mid - 1;
+				} else {
+					lower = mid + 1;
+				}
 			}
 		}
 

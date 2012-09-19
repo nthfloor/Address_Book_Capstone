@@ -14,13 +14,14 @@ import java.io.IOException;
 public class Runner {
 		
 	private static final String DEFAULT_SEARCH_ITEM = "734-665-7833";//#735
+	private static final boolean showConsoleOutput = false;
 
 	//instance variables
 	private static Scanner input; //for user keyboard input
 	private static DataStructure listOfRecords;
 
 	private static String filename;
-	private static int numRecords;
+	private static int numRecords;	
 
 	public static void main(String[] args) {
 		input = new Scanner(System.in);
@@ -131,7 +132,6 @@ public class Runner {
 					getRecord(listOfRecords, DEFAULT_SEARCH_ITEM);
 				} catch (RecordNotFoundException e) {
 					System.out.println("Could not find the requested record.");
-					;
 				}
 				break;
 			case 4:

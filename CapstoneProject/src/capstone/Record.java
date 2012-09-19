@@ -14,7 +14,7 @@ public class Record {
 		LASTNAME,
 		PHONE
 	}
-	public static SearchType currentSearchType = SearchType.FIRSTNAME;
+	public static SearchType currentSearchType = SearchType.PHONE;
 	
 	//instance variables
 	String firstname, lastname, company, address, city, country, state, ZIP,
