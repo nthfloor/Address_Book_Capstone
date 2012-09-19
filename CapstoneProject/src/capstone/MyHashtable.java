@@ -98,7 +98,7 @@ public class MyHashtable extends DataStructure {
 				searchCounter++;
 			}
 
-			if (rec.getKey().equals(key)) {
+			if (rec.getKeyValue().equals(key)) {
 				return rec;
 			}
 		}
@@ -108,10 +108,10 @@ public class MyHashtable extends DataStructure {
 
 	//add supplied record to a hash-table
 	public void add(Record newRec) {
-		int code = getHash(newRec.getKey()); // compute hash-code for indexing
+		int code = getHash(newRec.getKeyValue()); // compute hash-code for indexing
 
 		// TODO what is this for?
-		if (newRec.getKey().equals("615-883-8408"))
+		if (newRec.getKeyValue().equals("615-883-8408"))
 			newRec.toString();
 
 		data[code].addFirst(newRec);
@@ -132,7 +132,7 @@ public class MyHashtable extends DataStructure {
 			for (int i = 0; i < tableSize; i++) {
 				//copy data from data table into temp table
 				for (Record n : data[i]) {
-					tempCode = getHash(n.getKey());
+					tempCode = getHash(n.getKeyValue());
 					temp[tempCode].addFirst(n);
 				}
 			}

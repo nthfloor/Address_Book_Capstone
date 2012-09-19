@@ -99,9 +99,9 @@ public class SortedArray extends DataStructure {
 
 			mid = (higher + lower) / 2;
 
-			if (phone.equals(sortedRecords[mid].getKey())) { // record found				
+			if (phone.equals(sortedRecords[mid].getKeyValue())) { // record found				
 				return sortedRecords[mid];
-			} else if (phone.compareTo(sortedRecords[mid].getKey()) < 0) {
+			} else if (phone.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
 				higher = mid - 1;
 			} else {
 				lower = mid + 1;

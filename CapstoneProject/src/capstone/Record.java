@@ -9,6 +9,13 @@ package capstone;
  */
 
 public class Record {
+	public enum SearchType{
+		FIRSTNAME,
+		LASTNAME,
+		PHONE
+	}
+	public static SearchType currentSearchType = SearchType.FIRSTNAME;
+	
 	//instance variables
 	String firstname, lastname, company, address, city, country, state, ZIP,
 			phone, fax, email, web;
@@ -52,8 +59,19 @@ public class Record {
 		web = r.web;
 	}
 
-	public String getKey() {
-		return phone;
+	public String getKeyValue() {
+		if(currentSearchType == SearchType.FIRSTNAME)		
+			return firstname;
+		else if(currentSearchType == SearchType.LASTNAME)		
+			return lastname;
+		else if(currentSearchType == SearchType.PHONE)		
+			return phone;
+		else
+			return firstname;
+	}
+	
+	public void setKey(SearchType type){
+		currentSearchType = type;
 	}
 
 	@Override

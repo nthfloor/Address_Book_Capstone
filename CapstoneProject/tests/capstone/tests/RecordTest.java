@@ -40,7 +40,7 @@ public class RecordTest {
 	public final void testConstructor() throws IncorrectNumberOfFieldsException {
 		record1 = createExampleRecord1();
 
-		assertEquals("734-665-7833", record1.getKey());
+		assertEquals("734-665-7833", record1.getKeyValue());
 	}
 
 	@Test
@@ -49,8 +49,8 @@ public class RecordTest {
 
 		record2 = new Record(record1);
 
-		assertEquals("734-665-7833", record1.getKey());
-		assertEquals("734-665-7833", record2.getKey());
+		assertEquals("734-665-7833", record1.getKeyValue());
+		assertEquals("734-665-7833", record2.getKeyValue());
 
 		assertNotSame(record1, record2);
 		assertEquals(record1, record2);
@@ -63,8 +63,8 @@ public class RecordTest {
 
 		record2 = createExampleRecord1();
 
-		assertEquals("734-665-7833", record1.getKey());
-		assertEquals("734-665-7833", record2.getKey());
+		assertEquals("734-665-7833", record1.getKeyValue());
+		assertEquals("734-665-7833", record2.getKeyValue());
 
 		assertNotSame(record1, record2);
 		assertEquals(record1, record2);
