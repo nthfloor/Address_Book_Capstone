@@ -63,6 +63,7 @@ public class Runner {
 			case 3:
 				//use Binary tree DS
 				//System.out.println("Loading file into program...");
+				listOfRecords = new BinaryTree(filename);
 				System.out.println("Not implemented yet...");
 				mainMenu();
 			default:

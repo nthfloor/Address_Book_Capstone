@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BinaryTree extends DataStructure{
 	
 	//instance variables
-	Record root;
+	BinaryNode root;
 	
 	//progress variables
 	private Monitor progressThread;
@@ -28,16 +28,36 @@ public class BinaryTree extends DataStructure{
 	private double currentTime;
 	
 	public BinaryTree(){
-		
+		root = null;
 	}
+	public BinaryTree(String filename) throws IOException{
+		root = null;
+		loadData(filename);
+	}
+
+	//utility methods
+	public boolean isEmpty(){return root == null;}
+	public void makeEmpty(){root = null;}
+	public BinaryNode getRoot(){return root;}	
 
 	@Override
 	void loadData(String filename) throws IOException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
+	private void insert(Record node){
+		root = insertNode(node,root);
+	}
+
+	private BinaryNode insertNode(Record node,BinaryNode aRoot){
+		if(aRoot == null)
+			aRoot = new BinaryNode(node);
+		else if()
+	}
+
 	@Override
+	//inorder walkthrough traversal
 	void walkThrough() {
 		// TODO Auto-generated method stub
 		
