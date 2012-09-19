@@ -1,6 +1,7 @@
 package capstone;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Binary tree implementation of DataStructure
@@ -30,7 +31,7 @@ public class BinaryTree extends DataStructure {
 	}
 
 	@Override
-	public Record getRecord(String key) {
+	public ArrayList<Record> getRecords(String key) {
 		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
 	}
 }

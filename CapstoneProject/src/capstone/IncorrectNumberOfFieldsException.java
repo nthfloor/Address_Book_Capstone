@@ -7,6 +7,6 @@ package capstone;
  * @author Ryan Saunders
  */
 @SuppressWarnings("serial")
-public class IncorrectNumberOfFieldsException extends Exception {
+public class IncorrectNumberOfFieldsException extends RuntimeException {
 
 }

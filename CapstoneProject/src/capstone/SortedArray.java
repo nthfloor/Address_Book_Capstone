@@ -3,6 +3,9 @@ package capstone;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import capstone.Record.SearchType;
 
 /**
  * Sorted array implementation of DataStructure
@@ -84,12 +87,14 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
-	public Record getRecord(String key) throws RecordNotFoundException {				
+	public ArrayList<Record> getRecords(String searchValue) throws RecordNotFoundException {
+		ArrayList<Record> records = new ArrayList<Record>();
+
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
-		
-		if(Record.currentSearchType == Record.SearchType.PHONE){
+
+		if (Record.currentSearchType == Record.SearchType.PHONE) {
 			int lower = 0;
 			int higher = numberOfRecs - 1;
 			int mid;
@@ -101,14 +106,45 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
-				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found				
-					return sortedRecords[mid];
-				} else if (key.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
+				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
+
+					int i = mid;
+					do {
+						records.add(sortedRecords[i]);
+						i++;
+					} while (searchValue.equals(sortedRecords[i].getKeyValue()));
+
+					return records;
+				} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
 					higher = mid - 1;
 				} else {
 					lower = mid + 1;
 				}
 			}
+		} else if (Record.currentSearchType == SearchType.FIRSTNAME) {
+			for (int i = 0; i < totalNumberOfRecs; i++) {
+				synchronized (this) {
+					searchCounter++;
+				}
+				
+				if (sortedRecords[i].getFirstnameValue().equals(searchValue)) {
+					records.add(sortedRecords[i]);
+				}
+			}
+			
+			return records;
+		} else if (Record.currentSearchType == SearchType.LASTNAME) {
+			for (int i = 0; i < totalNumberOfRecs; i++) {
+				synchronized (this) {
+					searchCounter++;
+				}
+				
+				if (sortedRecords[i].getLastnameValue().equals(searchValue)) {
+					records.add(sortedRecords[i]);
+				}
+			}
+			
+			return records;
 		}
 
 		// Out of while loop: implies record does not exist

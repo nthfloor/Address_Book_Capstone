@@ -175,7 +175,7 @@ public class Runner {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 		try {
-			String tempName = listOfRecords.getRecord(searchPhone).toString();//search for phone number since unique
+			String tempName = listOfRecords.getRecords(searchPhone).toString();//search for phone number since unique
 			System.out.println(tempName);
 			endTime = System.currentTimeMillis();
 			recFound = true;

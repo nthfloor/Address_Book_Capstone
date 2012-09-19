@@ -1,6 +1,7 @@
 package capstone;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Abstract class for all data structures
@@ -36,13 +37,13 @@ public abstract class DataStructure {
 	public abstract void walkThrough();
 
 	/**
-	 * Returns a record by using random access, with timers.
+	 * Returns a list of record by using random access, with timers.
 	 * 
 	 * @param key - the field to search for
 	 * @return the requested record
 	 * @throws RecordNotFoundException if no record is found
 	 */
-	public abstract Record getRecord(String key) throws RecordNotFoundException;
+	public abstract ArrayList<Record> getRecords(String key) throws RecordNotFoundException;
 
 	/**
 	 * Returns the progress of either loading, walk-through,or searching through table.
