@@ -126,25 +126,30 @@ public class SortedArray extends DataStructure {
 				synchronized (this) {
 					searchCounter++;
 				}
-				
+
 				if (sortedRecords[i].getFirstnameValue().equals(searchValue)) {
 					records.add(sortedRecords[i]);
 				}
 			}
-			
-			return records;
+
+			if (records.isEmpty())
+				throw new RecordNotFoundException();
+			else
+				return records;
 		} else if (Record.currentSearchType == SearchType.LASTNAME) {
 			for (int i = 0; i < totalNumberOfRecs; i++) {
 				synchronized (this) {
 					searchCounter++;
 				}
-				
+
 				if (sortedRecords[i].getLastnameValue().equals(searchValue)) {
 					records.add(sortedRecords[i]);
 				}
 			}
-			
-			return records;
+			if (records.isEmpty())
+				throw new RecordNotFoundException();
+			else
+				return records;
 		}
 
 		// Out of while loop: implies record does not exist

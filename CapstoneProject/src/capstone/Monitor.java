@@ -1,5 +1,7 @@
 package capstone;
 
+import capstone.gui.AddressBookWindow;
+
 /**
  * Thread class used for monitoring progress taken when loading in data into data structure
  * 
@@ -11,12 +13,18 @@ package capstone;
 public class Monitor extends Thread {
 
 	private DataStructure listOfRecords;
-
-	public Monitor(DataStructure list) {
+	private AddressBookWindow frame;
+	
+	public Monitor(DataStructure list, AddressBookWindow frame) {
 		listOfRecords = list;
+		this.frame = frame;
 	}
 
-	private static void updateProgress(double progress) {
+	private static void updateProgress(double progress, AddressBookWindow frame) {
+		if (frame != null) {
+			frame.setProgress((int)(progress*100));
+		}
+		
 		final int width = 50; //progress bar width in chars
 		StringBuilder bar = new StringBuilder("[");
 		int i = 0;
@@ -39,14 +47,14 @@ public class Monitor extends Thread {
 			while (progress < 1) {
 				progress = listOfRecords.getProgress();
 				//System.out.println(progress);
-				updateProgress(progress);
+				updateProgress(progress, frame);
 				Thread.sleep(1);
 			}
 
 		} catch (InterruptedException e) {
 			/* Do nothing */
 
-			updateProgress(1);
+			updateProgress(1, frame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

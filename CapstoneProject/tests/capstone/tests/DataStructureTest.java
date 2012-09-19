@@ -54,7 +54,7 @@ public class DataStructureTest {
 
 	public final void loadDataStructureWithTimers(DataStructure ds, String filename) throws IOException {
 		long outerStartTime = System.currentTimeMillis();
-		Monitor progressThread = new Monitor(ds);
+		Monitor progressThread = new Monitor(ds, null);
 		progressThread.start();
 
 		long innerStartTime = System.currentTimeMillis();

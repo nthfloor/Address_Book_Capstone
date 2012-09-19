@@ -3,6 +3,8 @@ package capstone;
 import java.util.*;
 import java.io.IOException;
 
+import capstone.gui.AddressBookWindow;
+
 /**
  * Driver class for Address Book(Capstone project)
  * 
@@ -52,20 +54,20 @@ public class Runner {
 			case 1:
 				//use sorted array DS
 				listOfRecords = new SortedArray(numRecords);
-				loadData(listOfRecords, filename);
+				loadData(listOfRecords, filename, null);
 				mainMenu();
 				break;
 			case 2:
 				//use hash-table DS
 				listOfRecords = new MyHashtable(numRecords);
-				loadData(listOfRecords, filename);
+				loadData(listOfRecords, filename, null);
 				mainMenu();
 				break;
 			case 3:
 				//use binary-tree
 				// TODO this must still be implemented
 				listOfRecords = new BinaryTree(numRecords);
-				loadData(listOfRecords, filename);
+				loadData(listOfRecords, filename, null);
 				mainMenu();
 				break;
 			default:
@@ -75,8 +77,8 @@ public class Runner {
 		}
 	}
 
-	public synchronized static void loadData(DataStructure listOfRecords, String filename) {
-		Monitor progressThread = new Monitor(listOfRecords);
+	public synchronized static void loadData(DataStructure listOfRecords, String filename, AddressBookWindow frame) {
+		Monitor progressThread = new Monitor(listOfRecords, frame);
 		progressThread.start();
 
 		System.out.println("Loading file...");
@@ -124,12 +126,12 @@ public class Runner {
 				break;
 			case 2:
 				//perform sequential walk-through of DS
-				walkThrough(listOfRecords);
+				walkThrough(listOfRecords, null);
 				break;
 			case 3:
 				//execute random access operation
 				try {
-					getRecord(listOfRecords, DEFAULT_SEARCH_ITEM);
+					getRecords(listOfRecords, DEFAULT_SEARCH_ITEM, null);
 				} catch (RecordNotFoundException e) {
 					System.out.println("Could not find the requested record.");
 				}
@@ -143,8 +145,8 @@ public class Runner {
 		}//end while
 	}
 
-	public static void walkThrough(DataStructure listOfRecords) {
-		Monitor progressThread = new Monitor(listOfRecords);
+	public static void walkThrough(DataStructure listOfRecords, AddressBookWindow frame) {
+		Monitor progressThread = new Monitor(listOfRecords, frame);
 		progressThread.start();
 
 		System.out.println("Performing sequencial walkthrough...");
@@ -165,8 +167,8 @@ public class Runner {
 		}
 	}
 
-	public static void getRecord(DataStructure listOfRecords, String searchPhone) throws RecordNotFoundException {
-		Monitor progressThread = new Monitor(listOfRecords);
+	public static ArrayList<Record> getRecords(DataStructure listOfRecords, String searchPhone, AddressBookWindow frame) throws RecordNotFoundException {
+		Monitor progressThread = new Monitor(listOfRecords, frame);
 		progressThread.start();
 
 		System.out.println("Performing random access for " + searchPhone + "...");
@@ -175,13 +177,13 @@ public class Runner {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 		try {
-			String tempName = listOfRecords.getRecords(searchPhone).toString();//search for phone number since unique
-			System.out.println(tempName);
+			ArrayList<Record> list = listOfRecords.getRecords(searchPhone);//search for phone number since unique
+			String stringOfRecords = list.toString();
+			System.out.println(stringOfRecords);
 			endTime = System.currentTimeMillis();
 			recFound = true;
+			return list;
 		} finally {
-			if (!recFound) {
-			}
 			progressThread.interrupt();
 			try {
 				progressThread.join();
