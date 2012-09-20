@@ -7,7 +7,7 @@ package capstone;
  * Ryan Saunders
  *
  */
-public class BinaryNode implements Comparable<String>{
+public class BinaryNode {
 	//instance variables
 	Record element;
 	BinaryNode left,right;
@@ -30,16 +30,4 @@ public class BinaryNode implements Comparable<String>{
 	public void setElement(Record r){element = r;}
 	public void setLeft(BinaryNode l){left = l;}
 	public void setRight(BinaryNode r){right = r;}
-	
-	@Override
-	//TODO
-	public int compareTo(String arg0) {
-		
-		if(element.getKeyValue() < arg0)
-			return -1;
-		else if(element.getKeyValue() > arg0)
-			return 1;
-		else		
-			return 0;
-	}
 }

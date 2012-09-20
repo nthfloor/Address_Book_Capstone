@@ -53,14 +53,20 @@ public class BinaryTree extends DataStructure{
 		root = insertNode(node,root);
 	}
 
-	private BinaryNode insertNode(Record node,BinaryNode aRoot){
-		if(aRoot == null)
-			aRoot = new BinaryNode(node,null,null);
-		else if(true){
-			
+	
+	private BinaryNode insertNode(Record value,BinaryNode node){
+		if(node == null)
+			node = new BinaryNode(value,null,null);
+		else if(value.compareTo(node.getElement().getKeyValue()) == 0){
+			//replace the value in this node with 
 		}
+		else if(value.compareTo(node.getElement().getKeyValue()) < 0){
+			node.left = insertNode(value, node.left);
+		}
+		else
+			node.right = insertNode(value, node.right);
 		
-		return null; 
+		return node; 
 	}
 
 	@Override

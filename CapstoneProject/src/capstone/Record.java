@@ -8,7 +8,7 @@ package capstone;
  * 
  */
 
-public class Record {
+public class Record implements Comparable<String>{
 	public enum SearchType{
 		FIRSTNAME,
 		LASTNAME,
@@ -95,5 +95,11 @@ public class Record {
 				&& (fax.equals(rec.fax))
 				&& (email.equals(rec.email))
 				&& (web.equals(rec.web));
+	}
+	
+	@Override
+	//compare key value of record with some identifier
+	public int compareTo(String arg0) {
+		return getKeyValue().compareTo(arg0);
 	}
 }
