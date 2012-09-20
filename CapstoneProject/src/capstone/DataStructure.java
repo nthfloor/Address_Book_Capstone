@@ -43,11 +43,7 @@ public abstract class DataStructure {
 	 * @return the requested record
 	 * @throws RecordNotFoundException if no record is found
 	 */
-<<<<<<< HEAD
-	public abstract ArrayList<Record> getRecord(String key) throws RecordNotFoundException;
-=======
 	public abstract ArrayList<Record> getRecords(String key) throws RecordNotFoundException;
->>>>>>> ryanbranch
 
 	/**
 	 * Returns the progress of either loading, walk-through,or searching through table.

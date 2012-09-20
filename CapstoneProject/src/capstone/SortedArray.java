@@ -4,11 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-
 import capstone.Record.SearchType;
->>>>>>> ryanbranch
 
 /**
  * Sorted array implementation of DataStructure
@@ -90,13 +86,9 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
-<<<<<<< HEAD
-	public ArrayList<Record> getRecord(String key) throws RecordNotFoundException {				
-=======
 	public ArrayList<Record> getRecords(String searchValue) throws RecordNotFoundException {
 		ArrayList<Record> records = new ArrayList<Record>();
-
->>>>>>> ryanbranch
+		
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
@@ -113,32 +105,30 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
-<<<<<<< HEAD
-				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found		
+				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found		
 					ArrayList<Record> temp = new ArrayList<Record>();
-					
+
 					temp.add(sortedRecords[mid]);
-					
+
 					return temp;
-				} else if (key.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
-=======
-				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
-
-					int i = mid;
-					do {
-						records.add(sortedRecords[i]);
-						i++;
-					} while (searchValue.equals(sortedRecords[i].getKeyValue()));
-
-					return records;
 				} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
->>>>>>> ryanbranch
-					higher = mid - 1;
-				} else {
-					lower = mid + 1;
+					if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
+
+						int i = mid;
+						do {
+							records.add(sortedRecords[i]);
+							i++;
+						} while (searchValue.equals(sortedRecords[i].getKeyValue()));
+
+						return records;
+					} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
+						higher = mid - 1;
+					} else {
+						lower = mid + 1;
+					}
 				}
-			}
-		} else if (Record.currentSearchType == SearchType.FIRSTNAME) {
+			} 
+		}else if (Record.currentSearchType == SearchType.FIRSTNAME) {
 			for (int i = 0; i < totalNumberOfRecs; i++) {
 				synchronized (this) {
 					searchCounter++;

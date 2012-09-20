@@ -97,13 +97,12 @@ public class Record implements Comparable<String>{
 				&& (email.equals(rec.email))
 				&& (web.equals(rec.web));
 	}
-<<<<<<< HEAD
 	
 	@Override
 	//compare key value of record with some identifier
 	public int compareTo(String arg0) {
 		return getKeyValue().compareTo(arg0);
-=======
+	}
 
 	public String getFirstnameValue() {
 		return firstname;
@@ -111,6 +110,5 @@ public class Record implements Comparable<String>{
 
 	public String getLastnameValue() {
 		return lastname;
->>>>>>> master
 	}
 }

@@ -71,7 +71,7 @@ public class GuiRunner {
 				} else if (e.getItem().toString().equals("MyHashtable")) {
 					listOfRecords = new MyHashtable(FILE_SIZE);
 				} else if (e.getItem().toString().equals("BinaryTree")) {
-					listOfRecords = new BinaryTree(FILE_SIZE);
+					listOfRecords = new BinaryTree();
 				} else {
 					frame.disableComponents();
 					return;

@@ -66,7 +66,7 @@ public class Runner {
 			case 3:
 				//use binary-tree
 				// TODO this must still be implemented
-				listOfRecords = new BinaryTree(numRecords);
+				listOfRecords = new BinaryTree();
 				loadData(listOfRecords, filename, null);
 				mainMenu();
 				break;

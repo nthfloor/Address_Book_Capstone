@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package capstone;
 
 import java.io.IOException;
@@ -33,10 +32,6 @@ public class BinaryTree extends DataStructure{
 	
 	public BinaryTree(){
 		root = null;
-	}
-	public BinaryTree(String filename) throws IOException, IncorrectNumberOfFieldsException{
-		root = null;
-		loadData(filename);
 	}
 
 	//utility methods
@@ -79,47 +74,8 @@ public class BinaryTree extends DataStructure{
 	}
 
 	@Override
-	public ArrayList<Record> getRecord(String key) {
+	public ArrayList<Record> getRecords(String key) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 }
-=======
-package capstone;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-/**
- * Binary tree implementation of DataStructure
- * 
- * @author Nathan Floor
- * @author Ryan Saunders
- * 
- */
-
-public class BinaryTree extends DataStructure {
-
-	//instance variables
-	Record root;
-
-	public BinaryTree(int numRecords) {
-		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
-	}
-
-	@Override
-	public void loadData(String filename) throws IOException {
-		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
-	}
-
-	@Override
-	public void walkThrough() {
-		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
-	}
-
-	@Override
-	public ArrayList<Record> getRecords(String key) {
-		throw new UnsupportedOperationException("BinaryTree is currently unsupported.");
-	}
-}
->>>>>>> ryanbranch
