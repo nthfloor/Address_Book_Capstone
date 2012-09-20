@@ -14,6 +14,7 @@ public class Record {
 		LASTNAME,
 		PHONE
 	}
+	
 	public static SearchType currentSearchType = SearchType.PHONE;
 	
 	//instance variables
@@ -95,5 +96,13 @@ public class Record {
 				&& (fax.equals(rec.fax))
 				&& (email.equals(rec.email))
 				&& (web.equals(rec.web));
+	}
+
+	public String getFirstnameValue() {
+		return firstname;
+	}
+
+	public String getLastnameValue() {
+		return lastname;
 	}
 }
