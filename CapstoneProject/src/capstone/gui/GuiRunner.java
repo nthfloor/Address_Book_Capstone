@@ -1,6 +1,8 @@
 package capstone.gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -9,6 +11,7 @@ import javax.swing.JOptionPane;
 import capstone.BinaryTree;
 import capstone.DataStructure;
 import capstone.MyHashtable;
+import capstone.Record;
 import capstone.RecordNotFoundException;
 import capstone.Runner;
 import capstone.SortedArray;
@@ -22,11 +25,13 @@ import capstone.SortedArray;
  */
 public class GuiRunner {
 
-	private static final String[] COMBO_ITEMS = { "<Select a data structure>", "SortedArray", "MyHashtable", "BinaryTree" };
+	private static final String[] DS_COMBO_ITEMS = { "<Select a data structure>", "SortedArray", "MyHashtable", "BinaryTree" };
 
-	public static final int FILE_SIZE = 999;
+	public static final int FILE_SIZE = 349996;
 
-	public static final String FILE_NAME = "1000.csv";
+	public static final String FILE_NAME = "350000.csv";
+
+	private static final Object[] KEY_COMBO_ITEMS = { "PHONE", "FIRSTNAME", "LASTNAME" };
 
 	private static AddressBookWindow frame;
 
@@ -39,11 +44,11 @@ public class GuiRunner {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ItemListener comboListener = new ComboListener();
-					ItemListener walkBtnListener = new WalkBtnListener();
-					ItemListener searchBtnListener = new SearchBtnListener();
+					ItemListener dsComboListener = new DSComboListener();
+					ActionListener walkBtnListener = new WalkBtnListener();
+					ActionListener searchBtnListener = new SearchBtnListener();
 
-					frame = new AddressBookWindow(comboListener, COMBO_ITEMS, walkBtnListener, searchBtnListener);
+					frame = new AddressBookWindow(dsComboListener, DS_COMBO_ITEMS, walkBtnListener, searchBtnListener, KEY_COMBO_ITEMS);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,9 +57,9 @@ public class GuiRunner {
 		});
 	}
 
-	private static class ComboListener implements ItemListener {
+	private static class DSComboListener implements ItemListener {
 
-		public ComboListener() {
+		public DSComboListener() {
 
 		}
 
@@ -68,33 +73,36 @@ public class GuiRunner {
 				} else if (e.getItem().toString().equals("BinaryTree")) {
 					listOfRecords = new BinaryTree(FILE_SIZE);
 				} else {
+					frame.disableComponents();
 					return;
 				}
 
-				Runner.loadData(listOfRecords, FILE_NAME);
+				frame.enableComponents();
+				Runner.loadData(listOfRecords, FILE_NAME, frame);
 			}
 		}
 
 	}
 
-	private static class WalkBtnListener implements ItemListener {
+	private static class WalkBtnListener implements ActionListener {
 		@Override
-		public void itemStateChanged(ItemEvent e) {
-			if (e.getStateChange() == ItemEvent.SELECTED) {
-				Runner.walkThrough(listOfRecords);
-			}
+		public void actionPerformed(ActionEvent e) {
+			Runner.walkThrough(listOfRecords, frame);
+			System.out.println(e);
 		}
 	}
 
-	private static class SearchBtnListener implements ItemListener {
+	private static class SearchBtnListener implements ActionListener {
 		@Override
-		public void itemStateChanged(ItemEvent e) {
-			if (e.getStateChange() == ItemEvent.SELECTED) {
-				try {
-					Runner.getRecord(listOfRecords, frame.getSearchTerm());
-				} catch (RecordNotFoundException e1) {
-					JOptionPane.showMessageDialog(frame, "Record not found.");
-				}
+		public void actionPerformed(ActionEvent e) {
+			Record.currentSearchType = frame.getSortField();
+			
+			frame.clearJList();
+			
+			try {
+				frame.addToJList(Runner.getRecords(listOfRecords, frame.getSearchTerm(), frame));
+			} catch (RecordNotFoundException e1) {
+				JOptionPane.showMessageDialog(frame, "Record not found.");
 			}
 		}
 	}

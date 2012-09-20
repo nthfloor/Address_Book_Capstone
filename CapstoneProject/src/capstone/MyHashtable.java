@@ -1,7 +1,10 @@
 package capstone;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Hash-table implementation with chaining
@@ -86,7 +89,11 @@ public class MyHashtable extends DataStructure {
 
 	//return random access to a record, with timers 
 	@Override
+<<<<<<< HEAD
 	public ArrayList<Record> getRecord(String key) throws RecordNotFoundException {
+=======
+	public ArrayList<Record> getRecords(String key) throws RecordNotFoundException {
+>>>>>>> ryanbranch
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
@@ -99,7 +106,10 @@ public class MyHashtable extends DataStructure {
 			}
 
 			if (rec.getKeyValue().equals(key)) {
+<<<<<<< HEAD
 				//return list of records matching supplied key
+=======
+>>>>>>> ryanbranch
 				ArrayList<Record> temp = new ArrayList<Record>();
 				temp.add(rec);
 				

@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+
+import capstone.Record.SearchType;
+>>>>>>> ryanbranch
 
 /**
  * Sorted array implementation of DataStructure
@@ -85,12 +90,18 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public ArrayList<Record> getRecord(String key) throws RecordNotFoundException {				
+=======
+	public ArrayList<Record> getRecords(String searchValue) throws RecordNotFoundException {
+		ArrayList<Record> records = new ArrayList<Record>();
+
+>>>>>>> ryanbranch
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
-		
-		if(Record.currentSearchType == Record.SearchType.PHONE){
+
+		if (Record.currentSearchType == Record.SearchType.PHONE) {
 			int lower = 0;
 			int higher = numberOfRecs - 1;
 			int mid;
@@ -102,6 +113,7 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
+<<<<<<< HEAD
 				if (key.equals(sortedRecords[mid].getKeyValue())) { // record found		
 					ArrayList<Record> temp = new ArrayList<Record>();
 					
@@ -109,11 +121,52 @@ public class SortedArray extends DataStructure {
 					
 					return temp;
 				} else if (key.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
+=======
+				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
+
+					int i = mid;
+					do {
+						records.add(sortedRecords[i]);
+						i++;
+					} while (searchValue.equals(sortedRecords[i].getKeyValue()));
+
+					return records;
+				} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
+>>>>>>> ryanbranch
 					higher = mid - 1;
 				} else {
 					lower = mid + 1;
 				}
 			}
+		} else if (Record.currentSearchType == SearchType.FIRSTNAME) {
+			for (int i = 0; i < totalNumberOfRecs; i++) {
+				synchronized (this) {
+					searchCounter++;
+				}
+
+				if (sortedRecords[i].getFirstnameValue().equals(searchValue)) {
+					records.add(sortedRecords[i]);
+				}
+			}
+
+			if (records.isEmpty())
+				throw new RecordNotFoundException();
+			else
+				return records;
+		} else if (Record.currentSearchType == SearchType.LASTNAME) {
+			for (int i = 0; i < totalNumberOfRecs; i++) {
+				synchronized (this) {
+					searchCounter++;
+				}
+
+				if (sortedRecords[i].getLastnameValue().equals(searchValue)) {
+					records.add(sortedRecords[i]);
+				}
+			}
+			if (records.isEmpty())
+				throw new RecordNotFoundException();
+			else
+				return records;
 		}
 
 		// Out of while loop: implies record does not exist

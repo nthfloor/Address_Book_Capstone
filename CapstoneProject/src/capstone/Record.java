@@ -14,6 +14,7 @@ public class Record implements Comparable<String>{
 		LASTNAME,
 		PHONE
 	}
+	
 	public static SearchType currentSearchType = SearchType.PHONE;
 	
 	//instance variables
@@ -96,10 +97,20 @@ public class Record implements Comparable<String>{
 				&& (email.equals(rec.email))
 				&& (web.equals(rec.web));
 	}
+<<<<<<< HEAD
 	
 	@Override
 	//compare key value of record with some identifier
 	public int compareTo(String arg0) {
 		return getKeyValue().compareTo(arg0);
+=======
+
+	public String getFirstnameValue() {
+		return firstname;
+	}
+
+	public String getLastnameValue() {
+		return lastname;
+>>>>>>> master
 	}
 }
