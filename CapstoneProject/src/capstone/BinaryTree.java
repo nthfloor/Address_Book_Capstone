@@ -1,4 +1,7 @@
+package capstone;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Record calss for address book entries
@@ -30,7 +33,7 @@ public class BinaryTree extends DataStructure{
 	public BinaryTree(){
 		root = null;
 	}
-	public BinaryTree(String filename) throws IOException{
+	public BinaryTree(String filename) throws IOException, IncorrectNumberOfFieldsException{
 		root = null;
 		loadData(filename);
 	}
@@ -41,7 +44,7 @@ public class BinaryTree extends DataStructure{
 	public BinaryNode getRoot(){return root;}	
 
 	@Override
-	void loadData(String filename) throws IOException {
+	public	void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException {
 		
 		
 	}
@@ -52,27 +55,24 @@ public class BinaryTree extends DataStructure{
 
 	private BinaryNode insertNode(Record node,BinaryNode aRoot){
 		if(aRoot == null)
-			aRoot = new BinaryNode(node);
-		else if()
+			aRoot = new BinaryNode(node,null,null);
+		else if(true){
+			
+		}
+		
+		return null; 
 	}
 
 	@Override
 	//inorder walkthrough traversal
-	void walkThrough() {
+	public void walkThrough() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	String getRecord(String key) {
+	public ArrayList<Record> getRecord(String key) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	double getProgress() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }
