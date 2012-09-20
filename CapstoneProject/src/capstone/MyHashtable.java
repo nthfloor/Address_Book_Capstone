@@ -96,20 +96,22 @@ public class MyHashtable extends DataStructure {
 		searchCounter = 0;
 		int code = getHash(key);
 
+		//search through chained list and add all records which match specification
+		ArrayList<Record> records = new ArrayList<Record>();
 		for (Record rec : data[code]) {
 			synchronized (this) {
 				searchCounter++;
 			}
 
-			if (rec.getKeyValue().equals(key)) {
-				ArrayList<Record> temp = new ArrayList<Record>();
-				temp.add(rec);
-				
-				return temp;
+			if (rec.getKeyValue().equals(key)) {				
+				records.add(rec);			
 			}
 		}
-
-		throw new RecordNotFoundException();
+		
+		if(records.size() == 0)
+			throw new RecordNotFoundException();
+		else
+			return records;		
 	}
 
 	//add supplied record to a hash-table

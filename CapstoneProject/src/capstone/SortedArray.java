@@ -105,30 +105,22 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
-				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found		
-					ArrayList<Record> temp = new ArrayList<Record>();
+				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
 
-					temp.add(sortedRecords[mid]);
+					int i = mid;
+					do {
+						records.add(sortedRecords[i]);
+						i++;
+					} while (searchValue.equals(sortedRecords[i].getKeyValue()));
 
-					return temp;
+					return records;
 				} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
-					if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
-
-						int i = mid;
-						do {
-							records.add(sortedRecords[i]);
-							i++;
-						} while (searchValue.equals(sortedRecords[i].getKeyValue()));
-
-						return records;
-					} else if (searchValue.compareTo(sortedRecords[mid].getKeyValue()) < 0) {
-						higher = mid - 1;
-					} else {
-						lower = mid + 1;
-					}
+					higher = mid - 1;
+				} else {
+					lower = mid + 1;
 				}
-			} 
-		}else if (Record.currentSearchType == SearchType.FIRSTNAME) {
+			}
+		} else if (Record.currentSearchType == SearchType.FIRSTNAME) {
 			for (int i = 0; i < totalNumberOfRecs; i++) {
 				synchronized (this) {
 					searchCounter++;

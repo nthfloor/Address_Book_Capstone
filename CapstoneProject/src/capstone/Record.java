@@ -77,7 +77,7 @@ public class Record implements Comparable<String>{
 
 	@Override
 	public String toString() {
-		return firstname + " " + lastname;
+		return firstname + " " + lastname + " " + phone;
 	}
 
 	@Override
