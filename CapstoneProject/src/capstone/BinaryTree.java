@@ -59,6 +59,7 @@ public class BinaryTree extends DataStructure{
 			node = new BinaryNode(value,null,null);
 		else if(value.compareTo(node.getElement().getKeyValue()) == 0){
 			//replace the value in this node with 
+			node.element = value;
 		}
 		else if(value.compareTo(node.getElement().getKeyValue()) < 0){
 			node.left = insertNode(value, node.left);
