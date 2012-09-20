@@ -1,6 +1,7 @@
 package capstone.gui;
 
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 
@@ -16,6 +17,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.ProgressMonitor;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
@@ -47,6 +49,11 @@ public class AddressBookWindow extends JFrame {
 	private JProgressBar progressBar;
 	private DefaultListModel dataModel;
 	private JComboBox keyComboBox;
+	
+	//for progress bar for loading data into program
+	private ProgressMonitor progressPopupBar = null;
+	private boolean popUpNow = false;
+	private int numberOfRecords = 0;
 
 	/**
 	 * Create the frame.
@@ -125,6 +132,8 @@ public class AddressBookWindow extends JFrame {
 		JList list = new JList(dataModel);
 		scrollPane.setViewportView(list);
 	}
+	
+	public void setNumberOfRecords(int numRecs){numberOfRecords = numRecs;}
 
 	public String getSearchTerm() {
 		return searchTextField.getText();
@@ -161,11 +170,19 @@ public class AddressBookWindow extends JFrame {
 		else if (keyComboBox.getSelectedItem().equals("LASTNAME"))
 			return SearchType.LASTNAME;
 		else
-			return null;
-				
+			return null;				
 	}
 
 	public void clearJList() {
 		dataModel.clear();
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		
+		if(popUpNow){
+			progressPopupBar = new ProgressMonitor(this, "Loading records...", "Progress", 0, numberOfRecords);
+			popUpNow = false;
+		}
 	}
 }

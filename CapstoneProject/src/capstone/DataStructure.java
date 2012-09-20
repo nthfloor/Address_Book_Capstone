@@ -60,4 +60,7 @@ public abstract class DataStructure {
 		else
 			return 0.0;
 	}
+	
+	//return the total number of records in this object
+	public int getNumberOfRecs(){return numberOfRecs;}
 }

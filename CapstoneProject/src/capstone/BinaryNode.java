@@ -30,4 +30,15 @@ public class BinaryNode {
 	public void setElement(Record r){element = r;}
 	public void setLeft(BinaryNode l){left = l;}
 	public void setRight(BinaryNode r){right = r;}
+	
+	public void printInOrder(){
+		if(left != null)
+			left.printInOrder();
+		//print record
+		System.out.println(element.toString());
+		//BinaryTree.outputList.add(element);		
+		if(right != null)
+			right.printInOrder();
+		
+	}
 }

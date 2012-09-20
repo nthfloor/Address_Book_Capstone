@@ -1,5 +1,7 @@
 package capstone;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -16,22 +18,14 @@ public class BinaryTree extends DataStructure{
 	//instance variables
 	BinaryNode root;
 	
-	//progress variables
-	private Monitor progressThread;
-	private volatile int numberOfRecs;
-	private int totalNumberOfRecs;
-	private volatile int walkCounter = 0;
-	private volatile int searchCounter = 0;
-	private boolean isLoading = false;
-	private boolean isWalking = false;
-	private boolean isRandomAccess = false;
-
-	//timing variables
-	private double startTime;
-	private double currentTime;
+	public static ArrayList<Record> outputList;
 	
 	public BinaryTree(){
 		root = null;
+	}
+	public BinaryTree(int numRecs){
+		root = null;
+		numberOfRecs = numRecs;
 	}
 
 	//utility methods
@@ -41,12 +35,26 @@ public class BinaryTree extends DataStructure{
 
 	@Override
 	public	void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException {
-		
-		
+		isLoading = true;
+		isWalking = false;
+		isRandomAccess = false;
+		BufferedReader input = new BufferedReader(new FileReader(filename));
+		String[] newRecord;
+		String newline = "";
+		//loop through all records and add them to tree
+		while ((newline = input.readLine()) != null) {
+			synchronized (this) {
+				numberOfRecs++;
+			}
+			newRecord = newline.split(";");
+			insert(new Record(newRecord));// add to tree
+		}
+
+		input.close();		
 	}
 
-	private void insert(Record node){
-		root = insertNode(node,root);
+	private void insert(Record rec){
+		root = insertNode(rec,root);
 	}
 
 	
@@ -69,13 +77,30 @@ public class BinaryTree extends DataStructure{
 	@Override
 	//inorder walkthrough traversal
 	public void walkThrough() {
-		// TODO Auto-generated method stub
+		isLoading = false;
+		isWalking = true;
+		isRandomAccess = false;
+		outputList = new ArrayList<Record>();
 		
+		root.printInOrder();
 	}
 
 	@Override
 	public ArrayList<Record> getRecords(String key) {
-		// TODO Auto-generated method stub
+		isLoading = false;
+		isWalking = false;
+		isRandomAccess = true;
+		outputList = new ArrayList<Record>();
+		
+		
+		
+		
 		return null;
+	}
+	
+	private void search(BinaryNode node, BinaryNode searchItem){
+		if(node.element.compareTo(searchItem.element.getKeyValue()) < 0){
+			
+		}
 	}
 }
