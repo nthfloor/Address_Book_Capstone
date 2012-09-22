@@ -23,7 +23,9 @@ public class Runner {
 	private static DataStructure listOfRecords;
 
 	private static String filename;
-	private static int numRecords;	
+	private static int numRecords;
+	
+	private static long timeData;
 
 	public static void main(String[] args) {
 		input = new Scanner(System.in);
@@ -54,20 +56,21 @@ public class Runner {
 			case 1:
 				//use sorted array DS
 				listOfRecords = new SortedArray(numRecords);
-				loadData(listOfRecords, filename, null);
+				loadData(listOfRecords, filename, new CommandLineMonitor(listOfRecords));
+				
 				mainMenu();
 				break;
 			case 2:
 				//use hash-table DS
 				listOfRecords = new MyHashtable(numRecords);
-				loadData(listOfRecords, filename, null);
+				loadData(listOfRecords, filename, new CommandLineMonitor(listOfRecords));
 				mainMenu();
 				break;
 			case 3:
 				//use binary-tree
 				// TODO this must still be implemented
 				listOfRecords = new BinaryTree();
-				loadData(listOfRecords, filename, null);
+				loadData(listOfRecords, filename, new CommandLineMonitor(listOfRecords));
 				mainMenu();
 				break;
 			default:
@@ -77,8 +80,8 @@ public class Runner {
 		}
 	}
 
-	public synchronized static void loadData(DataStructure listOfRecords, String filename, AddressBookWindow frame) {
-		Monitor progressThread = new Monitor(listOfRecords, frame);
+	public synchronized static void loadData(DataStructure listOfRecords, String filename, Monitor progressThread) {
+		timeData = -1;
 		progressThread.start();
 
 		System.out.println("Loading file...");
@@ -93,6 +96,7 @@ public class Runner {
 			e.printStackTrace();
 		} finally {
 			long endTime = System.currentTimeMillis();
+			timeData = endTime - startTime;
 			progressThread.interrupt();
 			try {
 				progressThread.join();
@@ -126,12 +130,12 @@ public class Runner {
 				break;
 			case 2:
 				//perform sequential walk-through of DS
-				walkThrough(listOfRecords, null);
+				walkThrough(listOfRecords, new CommandLineMonitor(listOfRecords));
 				break;
 			case 3:
 				//execute random access operation
 				try {
-					getRecords(listOfRecords, DEFAULT_SEARCH_ITEM, null);
+					getRecords(listOfRecords, DEFAULT_SEARCH_ITEM, new CommandLineMonitor(listOfRecords));
 				} catch (RecordNotFoundException e) {
 					System.out.println("Could not find the requested record.");
 				}
@@ -145,8 +149,8 @@ public class Runner {
 		}//end while
 	}
 
-	public static void walkThrough(DataStructure listOfRecords, AddressBookWindow frame) {
-		Monitor progressThread = new Monitor(listOfRecords, frame);
+	public static void walkThrough(DataStructure listOfRecords, Monitor progressThread) {
+		timeData = -1;
 		progressThread.start();
 
 		System.out.println("Performing sequencial walkthrough...");
@@ -155,6 +159,7 @@ public class Runner {
 		long endTime = 0;
 		listOfRecords.walkThrough();
 		endTime = System.currentTimeMillis();
+		timeData = endTime - startTime;
 
 		progressThread.interrupt();
 		try {
@@ -167,8 +172,8 @@ public class Runner {
 		}
 	}
 
-	public static ArrayList<Record> getRecords(DataStructure listOfRecords, String searchPhone, AddressBookWindow frame) throws RecordNotFoundException {
-		Monitor progressThread = new Monitor(listOfRecords, frame);
+	public static ArrayList<Record> getRecords(DataStructure listOfRecords, String searchPhone, Monitor progressThread) throws RecordNotFoundException {
+		timeData = -1;
 		progressThread.start();
 
 		System.out.println("Performing random access for " + searchPhone + "...");
@@ -181,8 +186,14 @@ public class Runner {
 			String stringOfRecords = list.toString();
 			System.out.println(stringOfRecords);
 			endTime = System.currentTimeMillis();
+			
+			timeData = endTime - startTime;
 			recFound = true;
 			return list;
+		} catch (RecordNotFoundException e){
+			endTime = System.currentTimeMillis();
+			timeData = endTime - startTime;
+			throw new RecordNotFoundException();
 		} finally {
 			progressThread.interrupt();
 			try {
@@ -198,5 +209,9 @@ public class Runner {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static long getTimeData() {
+		return timeData;
 	}
 }

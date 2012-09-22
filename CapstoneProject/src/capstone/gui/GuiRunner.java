@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 import capstone.BinaryTree;
 import capstone.DataStructure;
@@ -66,19 +69,37 @@ public class GuiRunner {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
+
+				frame.disableComponents();
+				
 				if (e.getItem().toString().equals("SortedArray")) {
 					listOfRecords = new SortedArray(FILE_SIZE);
 				} else if (e.getItem().toString().equals("MyHashtable")) {
 					listOfRecords = new MyHashtable(FILE_SIZE);
 				} else if (e.getItem().toString().equals("BinaryTree")) {
-					listOfRecords = new BinaryTree();
+					listOfRecords = new BinaryTree(FILE_SIZE);
 				} else {
-					frame.disableComponents();
 					return;
 				}
-
-				frame.enableComponents();
-				Runner.loadData(listOfRecords, FILE_NAME, frame);
+				
+				// Safely execute loadData()
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+					
+					@Override
+					protected Void doInBackground() throws Exception {
+						frame.setShowProgressBar(true);
+						Runner.loadData(listOfRecords, FILE_NAME, new GuiMonitor(listOfRecords, frame));
+						return null;
+					}
+					
+					@Override
+					protected void done() {
+						frame.setShowProgressBar(false);
+						frame.displayTime("Data loaded into data structure. Time taken: " + Runner.getTimeData());
+						frame.enableComponents();
+					}
+				};
+				worker.execute();
 			}
 		}
 
@@ -86,24 +107,76 @@ public class GuiRunner {
 
 	private static class WalkBtnListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			Runner.walkThrough(listOfRecords, frame);
-			System.out.println(e);
+		public void actionPerformed(final ActionEvent e) {
+			
+			frame.disableComponents();
+			
+			// Safe execution of walkThrough()
+			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+				
+				@Override
+				protected Void doInBackground() throws Exception {
+					frame.setShowProgressBar(true);
+					Runner.walkThrough(listOfRecords, new GuiMonitor(listOfRecords, frame));
+					
+					return null;
+				}
+				
+				@Override
+				protected void done() {
+					frame.setShowProgressBar(false);
+					frame.displayTime("Walked through data structure. Time taken: " + Runner.getTimeData());
+					frame.enableComponents();
+				}
+			};
+			worker.execute();
 		}
 	}
 
 	private static class SearchBtnListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			frame.disableComponents();
 			Record.currentSearchType = frame.getSortField();
 			
 			frame.clearJList();
 			
-			try {
-				frame.addToJList(Runner.getRecords(listOfRecords, frame.getSearchTerm(), frame));
-			} catch (RecordNotFoundException e1) {
-				JOptionPane.showMessageDialog(frame, "Record not found.");
-			}
+			// Safe execution of getRecords()
+			SwingWorker<ArrayList<Record>, Void> worker = new SwingWorker<ArrayList<Record>, Void>() {
+				
+				@Override
+				protected ArrayList<Record> doInBackground() throws Exception {
+					frame.setShowProgressBar(true);
+
+					try {
+						return Runner.getRecords(listOfRecords, frame.getSearchTerm(), new GuiMonitor(listOfRecords, frame));
+					} catch (RecordNotFoundException e1) {
+						JOptionPane.showMessageDialog(frame, "Record not found.");
+						
+						return null;
+					}
+				}
+				
+				@Override
+				protected void done(){
+					frame.setShowProgressBar(false);
+					
+					try {
+						frame.addToJList(get());
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					frame.displayTime("Searched for records. Time taken: " + Runner.getTimeData());
+					
+					frame.enableComponents();
+				}
+			};
+			worker.execute();
 		}
 	}
 }

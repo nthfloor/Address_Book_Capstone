@@ -1,7 +1,5 @@
 package capstone;
 
-import capstone.gui.AddressBookWindow;
-
 /**
  * Thread class used for monitoring progress taken when loading in data into data structure
  * 
@@ -10,35 +8,18 @@ import capstone.gui.AddressBookWindow;
  * 
  */
 
-public class Monitor extends Thread {
+public abstract class Monitor extends Thread {
 
-	private DataStructure listOfRecords;
-	private AddressBookWindow frame;
+	private static final long SLEEP_INTERVAL = 100; // in milliseconds
 	
-	public Monitor(DataStructure list, AddressBookWindow frame) {
+	private DataStructure listOfRecords;
+	
+	public Monitor(DataStructure list) {
 		listOfRecords = list;
-		this.frame = frame;
 	}
 
-	private static void updateProgress(double progress, AddressBookWindow frame) {
-		if (frame != null) {
-			frame.setProgress((int)(progress*100));
-		}
-		
-		final int width = 50; //progress bar width in chars
-		StringBuilder bar = new StringBuilder("[");
-		int i = 0;
-		for (; i < (int) (progress * width) - 1; i++)
-			bar.append("=");
-		bar.append(">");
-		i++;
-		for (; i < width; i++)
-			bar.append(" ");
-
-		bar.append("]   " + (int) Math.ceil(progress * 100) + "%");
-		System.out.print("\r" + bar.toString()); //progress bar
-	}
-
+	abstract protected void updateProgress(double progress);
+	
 	//monitor progress of loading in of data, with progress bar
 	public void run() {
 		try {
@@ -47,17 +28,16 @@ public class Monitor extends Thread {
 			while (progress < 1) {
 				progress = listOfRecords.getProgress();
 				//System.out.println(progress);
-				updateProgress(progress, frame);
-				Thread.sleep(1);
+				updateProgress(progress);
+				Thread.sleep(SLEEP_INTERVAL);
 			}
 
 		} catch (InterruptedException e) {
 			/* Do nothing */
 
-			updateProgress(1, frame);
+			updateProgress(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("");
 	}
 }

@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import capstone.CommandLineMonitor;
 import capstone.DataStructure;
 import capstone.Monitor;
 import capstone.MyHashtable;
@@ -54,7 +56,7 @@ public class DataStructureTest {
 
 	public final void loadDataStructureWithTimers(DataStructure ds, String filename) throws IOException {
 		long outerStartTime = System.currentTimeMillis();
-		Monitor progressThread = new Monitor(ds, null);
+		CommandLineMonitor progressThread = new CommandLineMonitor(ds);
 		progressThread.start();
 
 		long innerStartTime = System.currentTimeMillis();
@@ -146,7 +148,12 @@ public class DataStructureTest {
 			System.out.println(listWithTwoElements.get(0).equals(ds.getRecords(DEFAULT_LASTNAME).get(0)));
 			System.out.println(listWithTwoElements.get(1).equals(ds.getRecords(DEFAULT_LASTNAME).get(1)));
 			ArrayList<Record> r = ds.getRecords(DEFAULT_LASTNAME);
-			assertEquals(listWithTwoElements, r);
+			
+			for (Record rec: listWithTwoElements){
+				assertTrue(r.contains(rec));
+			}
+			
+//			assertEquals(listWithTwoElements, r);
 		} catch (RecordNotFoundException e) {
 			fail();			
 		}
