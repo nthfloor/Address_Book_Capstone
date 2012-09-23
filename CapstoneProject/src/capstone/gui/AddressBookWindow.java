@@ -25,8 +25,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
-import capstone.Record;
-import capstone.Record.SearchType;
+import capstone.datastructures.Record;
+import capstone.datastructures.Record.SearchType;
+
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 

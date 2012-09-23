@@ -11,13 +11,14 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-import capstone.BinaryTree;
-import capstone.DataStructure;
-import capstone.MyHashtable;
-import capstone.Record;
-import capstone.RecordNotFoundException;
-import capstone.Runner;
-import capstone.SortedArray;
+import capstone.RunHelper;
+import capstone.cli.CliRunner;
+import capstone.datastructures.BinaryTree;
+import capstone.datastructures.DataStructure;
+import capstone.datastructures.MyHashtable;
+import capstone.datastructures.Record;
+import capstone.datastructures.RecordNotFoundException;
+import capstone.datastructures.SortedArray;
 
 /**
  * GUI driver class for Address Book (Capstone project)
@@ -40,6 +41,8 @@ public class GuiRunner {
 
 	private static DataStructure listOfRecords;
 
+	private static RunHelper helper;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -50,7 +53,7 @@ public class GuiRunner {
 					ItemListener dsComboListener = new DSComboListener();
 					ActionListener walkBtnListener = new WalkBtnListener();
 					ActionListener searchBtnListener = new SearchBtnListener();
-
+					
 					frame = new AddressBookWindow(dsComboListener, DS_COMBO_ITEMS, walkBtnListener, searchBtnListener, KEY_COMBO_ITEMS);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -82,20 +85,22 @@ public class GuiRunner {
 					return;
 				}
 				
+				helper = new RunHelper(listOfRecords, new GuiMonitor(listOfRecords, frame));
+				
 				// Safely execute loadData()
 				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 					
 					@Override
-					protected Void doInBackground() throws Exception {
+					protected Void doInBackground() {
 						frame.setShowProgressBar(true);
-						Runner.loadData(listOfRecords, FILE_NAME, new GuiMonitor(listOfRecords, frame));
+						helper.loadData(FILE_NAME);
 						return null;
 					}
 					
 					@Override
 					protected void done() {
 						frame.setShowProgressBar(false);
-						frame.displayTime("Data loaded into data structure. Time taken: " + Runner.getTimeData());
+						frame.displayTime("Data loaded into data structure. Time taken: " + helper.getTimeData());
 						frame.enableComponents();
 					}
 				};
@@ -115,9 +120,9 @@ public class GuiRunner {
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				
 				@Override
-				protected Void doInBackground() throws Exception {
+				protected Void doInBackground() {
 					frame.setShowProgressBar(true);
-					Runner.walkThrough(listOfRecords, new GuiMonitor(listOfRecords, frame));
+					helper.walkThrough();
 					
 					return null;
 				}
@@ -125,7 +130,7 @@ public class GuiRunner {
 				@Override
 				protected void done() {
 					frame.setShowProgressBar(false);
-					frame.displayTime("Walked through data structure. Time taken: " + Runner.getTimeData());
+					frame.displayTime("Walked through data structure. Time taken: " + helper.getTimeData());
 					frame.enableComponents();
 				}
 			};
@@ -145,11 +150,11 @@ public class GuiRunner {
 			SwingWorker<ArrayList<Record>, Void> worker = new SwingWorker<ArrayList<Record>, Void>() {
 				
 				@Override
-				protected ArrayList<Record> doInBackground() throws Exception {
+				protected ArrayList<Record> doInBackground() {
 					frame.setShowProgressBar(true);
 
 					try {
-						return Runner.getRecords(listOfRecords, frame.getSearchTerm(), new GuiMonitor(listOfRecords, frame));
+						return helper.getRecords(frame.getSearchTerm());
 					} catch (RecordNotFoundException e1) {
 						JOptionPane.showMessageDialog(frame, "Record not found.");
 						
@@ -171,7 +176,7 @@ public class GuiRunner {
 						e.printStackTrace();
 					}
 
-					frame.displayTime("Searched for records. Time taken: " + Runner.getTimeData());
+					frame.displayTime("Searched for records. Time taken: " + helper.getTimeData());
 					
 					frame.enableComponents();
 				}

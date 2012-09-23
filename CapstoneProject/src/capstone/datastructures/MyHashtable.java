@@ -1,10 +1,11 @@
-package capstone;
+package capstone.datastructures;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 
 /**
  * Hash-table implementation with chaining

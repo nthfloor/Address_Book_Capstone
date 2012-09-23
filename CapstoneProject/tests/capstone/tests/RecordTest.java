@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import capstone.IncorrectNumberOfFieldsException;
-import capstone.Record;
+import capstone.datastructures.IncorrectNumberOfFieldsException;
+import capstone.datastructures.Record;
 
 public class RecordTest {
 

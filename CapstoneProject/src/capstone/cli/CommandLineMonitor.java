@@ -1,10 +1,13 @@
-package capstone;
+package capstone.cli;
+
+import capstone.Monitor;
+import capstone.datastructures.DataStructure;
 
 
 public class CommandLineMonitor extends Monitor {
 	
-	public CommandLineMonitor(DataStructure list) {
-		super(list);
+	public CommandLineMonitor(DataStructure dsToBeMonitored) {
+		super(dsToBeMonitored);
 	}
 
 	protected void updateProgress(double progress) {
@@ -20,5 +23,15 @@ public class CommandLineMonitor extends Monitor {
 
 		bar.append("]   " + (int) Math.ceil(progress * 100) + "%");
 		System.out.print("\r" + bar.toString()); //progress bar
+	}
+
+	/**
+	 * Shallowish copy (creates a reference to a new Monitor, but the new monitor shares the datastructure of the original)
+	 * 
+	 * @return the copy
+	 */
+	@Override
+	protected Monitor copy() {
+		return new CommandLineMonitor(getMonitoredDS());
 	}
 }

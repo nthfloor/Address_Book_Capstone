@@ -1,4 +1,5 @@
-package capstone;
+package capstone.datastructures;
+
 
 /**
  * Record class for address book entries

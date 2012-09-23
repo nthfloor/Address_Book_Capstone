@@ -1,4 +1,4 @@
-package capstone;
+package capstone.datastructures;
 
 /**
  * Exception thrown when the incorrect number of fields are placed into a record.

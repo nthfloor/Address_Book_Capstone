@@ -1,4 +1,4 @@
-package capstone;
+package capstone.datastructures;
 
 /**
  * Exception thrown when requested record is not found.

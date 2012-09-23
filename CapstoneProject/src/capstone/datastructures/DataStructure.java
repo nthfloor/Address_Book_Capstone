@@ -1,7 +1,8 @@
-package capstone;
+package capstone.datastructures;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  * Abstract class for all data structures

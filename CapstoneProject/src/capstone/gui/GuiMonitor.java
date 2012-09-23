@@ -1,7 +1,8 @@
 package capstone.gui;
 
-import capstone.DataStructure;
 import capstone.Monitor;
+import capstone.cli.CommandLineMonitor;
+import capstone.datastructures.DataStructure;
 
 public class GuiMonitor extends Monitor {
 
@@ -16,6 +17,17 @@ public class GuiMonitor extends Monitor {
 	@Override
 	protected void updateProgress(double progress) {
 		updater.setProgress((int) (progress*100));
+	}
+
+	/**
+	 * Shallowish copy (creates a reference to a new Monitor, but the new monitor shares
+	 * the datastructure and the updater of the original)
+	 * 
+	 * @return the copy
+	 */
+	@Override
+	protected Monitor copy() {
+		return new GuiMonitor(getMonitoredDS(), updater);
 	}
 
 }

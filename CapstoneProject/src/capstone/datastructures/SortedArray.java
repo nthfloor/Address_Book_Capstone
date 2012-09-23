@@ -1,10 +1,11 @@
-package capstone;
+package capstone.datastructures;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import capstone.Record.SearchType;
+
+import capstone.datastructures.Record.SearchType;
 
 /**
  * Sorted array implementation of DataStructure

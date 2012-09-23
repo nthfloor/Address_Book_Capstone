@@ -1,4 +1,5 @@
-package capstone;
+package capstone.datastructures;
+
 
 /**
  * Node class for binarytree implmentation

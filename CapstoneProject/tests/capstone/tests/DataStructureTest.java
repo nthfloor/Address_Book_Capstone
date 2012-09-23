@@ -10,14 +10,14 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import capstone.CommandLineMonitor;
-import capstone.DataStructure;
 import capstone.Monitor;
-import capstone.MyHashtable;
-import capstone.Record;
-import capstone.Record.SearchType;
-import capstone.RecordNotFoundException;
-import capstone.SortedArray;
+import capstone.cli.CommandLineMonitor;
+import capstone.datastructures.DataStructure;
+import capstone.datastructures.MyHashtable;
+import capstone.datastructures.Record;
+import capstone.datastructures.RecordNotFoundException;
+import capstone.datastructures.SortedArray;
+import capstone.datastructures.Record.SearchType;
 
 /**
  * Unit tests for the DataStructure class and its subclasses.
@@ -276,7 +276,7 @@ public class DataStructureTest {
 	}
 
 	/**
-	 * Test method for {@link capstone.SortedArray#getRecord(int)}.
+	 * Test method for {@link capstone.datastructures.SortedArray#getRecord(int)}.
 	 */
 	@Test
 	public final void testSortedArrayGetRecordInt() throws IOException {
