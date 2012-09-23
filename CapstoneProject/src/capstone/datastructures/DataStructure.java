@@ -3,6 +3,9 @@ package capstone.datastructures;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import capstone.WalkThroughMessangerException;
+import capstone.WalkThroughMessenger;
+
 
 /**
  * Abstract class for all data structures
@@ -34,8 +37,9 @@ public abstract class DataStructure {
 
 	/**
 	 * Perform walk-through all, with timers
+	 * @throws WalkThroughMessangerException 
 	 */
-	public abstract void walkThrough();
+	public abstract void walkThrough(WalkThroughMessenger messenger) throws WalkThroughMessangerException;
 
 	/**
 	 * Returns a list of record by using random access, with timers.

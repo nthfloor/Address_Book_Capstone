@@ -11,6 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import capstone.Monitor;
+import capstone.WalkThroughMessangerException;
 import capstone.cli.CommandLineMonitor;
 import capstone.datastructures.DataStructure;
 import capstone.datastructures.MyHashtable;
@@ -93,21 +94,21 @@ public class DataStructureTest {
 		loadedBinaryTree = true;
 	}
 
-	public final void testWalkThrough(DataStructure ds) {
-		ds.walkThrough();
+	public final void testWalkThrough(DataStructure ds) throws WalkThroughMessangerException {
+		ds.walkThrough(null);
 
 		assertEquals(1.0, ds.getProgress(), 0);
 	}
 
 	@Test
-	public final void testSortedArrayWalkThrough() throws IOException {
+	public final void testSortedArrayWalkThrough() throws IOException, WalkThroughMessangerException {
 		if (!loadedSortedArray)
 			loadSortedArrayWithTimers();
 		testWalkThrough(sortedArray);
 	}
 
 	@Test
-	public final void testHashtableWalkThrough() throws IOException {
+	public final void testHashtableWalkThrough() throws IOException, WalkThroughMessangerException {
 		if (!loadedHashtable)
 			loadHashtableWithTimers();
 		testWalkThrough(hashtable);
@@ -145,8 +146,8 @@ public class DataStructureTest {
 			ArrayList<Record> listWithTwoElements = listWithTwo();
 			Record.currentSearchType = SearchType.LASTNAME;
 
-			System.out.println(listWithTwoElements.get(0).equals(ds.getRecords(DEFAULT_LASTNAME).get(0)));
-			System.out.println(listWithTwoElements.get(1).equals(ds.getRecords(DEFAULT_LASTNAME).get(1)));
+//			System.out.println(listWithTwoElements.get(0).equals(ds.getRecords(DEFAULT_LASTNAME).get(0)));
+//			System.out.println(listWithTwoElements.get(1).equals(ds.getRecords(DEFAULT_LASTNAME).get(1)));
 			ArrayList<Record> r = ds.getRecords(DEFAULT_LASTNAME);
 			
 			for (Record rec: listWithTwoElements){

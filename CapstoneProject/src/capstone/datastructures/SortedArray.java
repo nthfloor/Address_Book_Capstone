@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import capstone.WalkThroughMessangerException;
+import capstone.WalkThroughMessenger;
 import capstone.datastructures.Record.SearchType;
 
 /**
@@ -73,23 +75,38 @@ public class SortedArray extends DataStructure {
 	}
 
 	@Override
-	public void walkThrough() {
+	public void walkThrough(WalkThroughMessenger messenger) throws WalkThroughMessangerException {
 		isLoading = false;
 		isWalking = true;
 		isRandomAccess = false;
 		walkCounter = 0;
-		for (int i = 0; i < numberOfRecs; i++) {
-			synchronized (this) {
-				walkCounter++;
+
+//		String temp = "";
+		if (messenger != null) {
+			for (int i = 0; i < numberOfRecs; i++) {
+				synchronized (this) {
+					walkCounter++;
+				}
+
+				messenger.appendWalkThroughMessage(sortedRecords[i].toString());
 			}
-			sortedRecords[i].toString();
+		} else {
+			for (int i = 0; i < numberOfRecs; i++) {
+				synchronized (this) {
+					walkCounter++;
+				}
+
+//				temp = sortedRecords[i].toString();
+				System.out.println(sortedRecords[i].toString());
+			}
+			
 		}
 	}
 
 	@Override
 	public ArrayList<Record> getRecords(String searchValue) throws RecordNotFoundException {
 		ArrayList<Record> records = new ArrayList<Record>();
-		
+
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;

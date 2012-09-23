@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import capstone.WalkThroughMessangerException;
+import capstone.WalkThroughMessenger;
 
 /**
  * Hash-table implementation with chaining
@@ -71,19 +73,29 @@ public class MyHashtable extends DataStructure {
 	//perform walk-through all, with timers
 	@SuppressWarnings("unused")
 	@Override
-	public void walkThrough() {
+	public void walkThrough(WalkThroughMessenger messenger) throws WalkThroughMessangerException {
 		isLoading = false;
 		isWalking = true;
 		isRandomAccess = false;
 		walkCounter = 0;
 
-		String temp = "";
-		for (int i = 0; i < tableSize; i++) {
-			for (Record n : data[i]) {
-				synchronized (this) {
-					walkCounter++;
+		if (messenger != null) {
+			for (int i = 0; i < tableSize; i++) {
+				for (Record n : data[i]) {
+					synchronized (this) {
+						walkCounter++;
+					}
+					messenger.appendWalkThroughMessage(n.toString());
 				}
-				temp = n.toString();
+			}
+		} else {
+			for (int i = 0; i < tableSize; i++) {
+				for (Record n : data[i]) {
+					synchronized (this) {
+						walkCounter++;
+					}
+					System.out.println(n.toString());
+				}
 			}
 		}
 	}
@@ -104,15 +116,15 @@ public class MyHashtable extends DataStructure {
 				searchCounter++;
 			}
 
-			if (rec.getKeyValue().equals(key)) {				
-				records.add(rec);			
+			if (rec.getKeyValue().equals(key)) {
+				records.add(rec);
 			}
 		}
-		
-		if(records.size() == 0)
+
+		if (records.size() == 0)
 			throw new RecordNotFoundException();
 		else
-			return records;		
+			return records;
 	}
 
 	//add supplied record to a hash-table

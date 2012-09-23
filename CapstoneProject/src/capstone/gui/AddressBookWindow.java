@@ -10,6 +10,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,17 +20,18 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.ProgressMonitor;
+import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import net.miginfocom.swing.MigLayout;
+import capstone.WalkThroughMessangerException;
+import capstone.WalkThroughMessenger;
 import capstone.datastructures.Record;
 import capstone.datastructures.Record.SearchType;
-
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
 
 /**
  * GUI class for Address Book (Capstone project)
@@ -39,7 +41,7 @@ import javax.swing.JLabel;
  * 
  */
 @SuppressWarnings("serial")
-public class AddressBookWindow extends JFrame implements ProgressUpdater {
+public class AddressBookWindow extends JFrame implements ProgressUpdater, WalkThroughMessenger {
 
 	private JPanel contentPane;
 	private JTextField searchTextField;
@@ -49,6 +51,8 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 	private DefaultListModel dataModel;
 	private JComboBox keyComboBox;
 	private JLabel statusBar;
+	private Document walkThroughDocument;
+	private JTextPane walkThroughTextPane;
 
 //	//for progress bar for loading data into program
 //	private ProgressMonitor progressPopupBar = null;
@@ -60,6 +64,8 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 	 */
 	public AddressBookWindow(ItemListener datastructureComboListener, Object[] datastructureComboItems, ActionListener walkBtnListener, ActionListener searchBtnListener, Object[] keyComboItems) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		setTitle("Address Book");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -101,12 +107,13 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		btnWalkThrough.setEnabled(false);
 		btnWalkThrough.addActionListener(walkBtnListener);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		walkThroughPanel.add(scrollPane_1, "cell 0 1,grow");
+		JScrollPane walkThroughScrollPane = new JScrollPane();
+		walkThroughPanel.add(walkThroughScrollPane, "cell 0 1,grow");
 
-		JTextPane textPane = new JTextPane();
-		scrollPane_1.setViewportView(textPane);
-		textPane.setPreferredSize(new Dimension(300, 300));
+		walkThroughTextPane = new JTextPane();
+		walkThroughTextPane.setPreferredSize(new Dimension(300, 300));
+		walkThroughDocument = walkThroughTextPane.getDocument();
+		walkThroughScrollPane.setViewportView(walkThroughTextPane);
 
 		JPanel searchPanel = new JPanel();
 		tabbedPane.addTab("Search", null, searchPanel, null);
@@ -136,7 +143,7 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		progressBar.setPreferredSize(new Dimension(800, 10));
 		setShowProgressBar(false);
 		contentPane.add(progressBar, "cell 0 2");
-		
+
 		statusBar = new JLabel("No tasks executing.");
 		contentPane.add(statusBar, "cell 0 3");
 
@@ -197,8 +204,23 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		progressBar.setVisible(show);
 	}
 
-	public void displayTime(String timeInfo) {
+	public void setStatusMessage(String timeInfo) {
 		statusBar.setText(timeInfo);
+	}
+
+	public void appendWalkThroughMessage(final String txt) throws WalkThroughMessangerException {
+//		walkThroughStringBuffer.append(txt + "\n");
+
+		try {
+			walkThroughDocument.insertString(walkThroughDocument.getLength(), txt + "\n", null);
+		} catch (BadLocationException e) {
+			try {
+				throw new WalkThroughMessangerException();
+			} catch (WalkThroughMessangerException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
 //	public void paint(Graphics g){

@@ -38,6 +38,7 @@ public abstract class Monitor extends Thread {
 			/* Do nothing */
 
 			updateProgress(1);
+			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

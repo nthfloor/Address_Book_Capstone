@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import capstone.RunHelper;
+import capstone.WalkThroughMessangerException;
 import capstone.cli.CliRunner;
 import capstone.datastructures.BinaryTree;
 import capstone.datastructures.DataStructure;
@@ -100,7 +101,7 @@ public class GuiRunner {
 					@Override
 					protected void done() {
 						frame.setShowProgressBar(false);
-						frame.displayTime("Data loaded into data structure. Time taken: " + helper.getTimeData());
+						frame.setStatusMessage("Data loaded into data structure. Time taken: " + helper.getTimeData());
 						frame.enableComponents();
 					}
 				};
@@ -120,9 +121,10 @@ public class GuiRunner {
 			SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 				
 				@Override
-				protected Void doInBackground() {
+				protected Void doInBackground() throws WalkThroughMessangerException {
 					frame.setShowProgressBar(true);
-					helper.walkThrough();
+					
+					helper.walkThrough(frame);
 					
 					return null;
 				}
@@ -130,7 +132,7 @@ public class GuiRunner {
 				@Override
 				protected void done() {
 					frame.setShowProgressBar(false);
-					frame.displayTime("Walked through data structure. Time taken: " + helper.getTimeData());
+					frame.setStatusMessage("Walked through data structure. Time taken: " + helper.getTimeData());
 					frame.enableComponents();
 				}
 			};
@@ -176,7 +178,7 @@ public class GuiRunner {
 						e.printStackTrace();
 					}
 
-					frame.displayTime("Searched for records. Time taken: " + helper.getTimeData());
+					frame.setStatusMessage("Searched for records. Time taken: " + helper.getTimeData());
 					
 					frame.enableComponents();
 				}

@@ -3,6 +3,7 @@ package capstone.cli;
 import java.util.Scanner;
 
 import capstone.RunHelper;
+import capstone.WalkThroughMessangerException;
 import capstone.datastructures.BinaryTree;
 import capstone.datastructures.DataStructure;
 import capstone.datastructures.MyHashtable;
@@ -108,7 +109,12 @@ public class CliRunner {
 				break;
 			case 2:
 				//perform sequential walk-through of DS
-				helper.walkThrough();
+				try {
+					helper.walkThrough(null);
+				} catch (WalkThroughMessangerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
 			case 3:
 				//execute random access operation

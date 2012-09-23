@@ -55,7 +55,7 @@ public class RunHelper {
 		}
 	}
 
-	public void walkThrough() {
+	public void walkThrough(WalkThroughMessenger messanger) throws WalkThroughMessangerException {
 		timeData = -1;
 		Monitor progressThread = getNewProgressThread();
 		progressThread.start();
@@ -64,7 +64,7 @@ public class RunHelper {
 
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
-		ds.walkThrough();
+		ds.walkThrough(messanger);
 		endTime = System.currentTimeMillis();
 		timeData = endTime - startTime;
 

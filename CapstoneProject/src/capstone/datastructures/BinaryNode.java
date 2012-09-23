@@ -1,5 +1,8 @@
 package capstone.datastructures;
 
+import capstone.WalkThroughMessangerException;
+import capstone.WalkThroughMessenger;
+
 
 /**
  * Node class for binarytree implmentation
@@ -41,5 +44,17 @@ public class BinaryNode {
 		if(right != null)
 			right.printInOrder();
 		
+	}
+	
+	public void messageInOrder(WalkThroughMessenger messenger) throws WalkThroughMessangerException {
+		if (left != null)
+			left.messageInOrder(messenger);
+
+		messenger.appendWalkThroughMessage(element.toString());
+
+		//BinaryTree.outputList.add(element);		
+		if (right != null)
+			right.messageInOrder(messenger);
+
 	}
 }
