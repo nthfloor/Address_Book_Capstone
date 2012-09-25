@@ -21,11 +21,12 @@ public class BinaryTree extends DataStructure{
 	public static ArrayList<Record> outputList;
 	
 	public BinaryTree(){
-		root = null;
+		this(0);
 	}
 	public BinaryTree(int numRecs){
 		root = null;
-		numberOfRecs = numRecs;
+		totalNumberOfRecs = numRecs;
+		numberOfRecs = 0;
 	}
 
 	//utility methods
@@ -55,28 +56,41 @@ public class BinaryTree extends DataStructure{
 		input.close();		
 	}
 
-	private void insert(Record rec){
+	private void insert(Record rec){		
 		root = insertNode(rec,root);
 	}
 
-	
+	//private method for inserting records into binary tree
 	private BinaryNode insertNode(Record value,BinaryNode node){
+		//if root node
 		if(node == null){
 			ArrayList<Record> temp = new ArrayList<Record>();
 			temp.add(value);
 			node = new BinaryNode(temp,null,null);
-		}
-		else if(value.compareTo(node.getElement().get(0).getKeyValue()) == 0){
-			//replace the value in this node with 
-			node.element.add(value);
-		}
-		else if(value.compareTo(node.getElement().get(0).getKeyValue()) < 0){
-			node.left = insertNode(value, node.left);
-		}
-		else
-			node.right = insertNode(value, node.right);
-		
-		return node; 
+			return node;
+		}	
+	
+		//iterate through tree to find correct position to insert new record 
+		while(node != null){
+						
+			if(value.compareTo(node.getElement().get(0).getKeyValue()) < 0){
+				node = node.left;
+			}
+			else if(value.compareTo(node.getElement().get(0).getKeyValue()) > 0){
+				node = node.right;
+			}
+			else if(value.compareTo(node.getElement().get(0).getKeyValue()) == 0){
+				//add value to node the value in this node with
+				//duplicate
+				node.element.add(value);
+			}			
+		}				
+
+		//add new node to tree
+		ArrayList<Record> temp = new ArrayList<Record>();
+		temp.add(value);
+		node = new BinaryNode(temp,null,null);
+		return node;		
 	}
 
 	@Override
@@ -111,7 +125,7 @@ public class BinaryTree extends DataStructure{
 		while(searchItem != null){
 			if(x.compareTo(searchItem.element.get(0).getKeyValue()) < 0)
 				searchItem = searchItem.left;
-			else if(x.compareTo(searchItem.element.get(0).getKeyValue()) < 0)
+			else if(x.compareTo(searchItem.element.get(0).getKeyValue()) > 0)
 				searchItem = searchItem.right;
 			else{
 				for(int i=0;i<searchItem.element.size();i++)

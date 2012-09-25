@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import capstone.Record.SearchType;
-
 /**
  * Hash-table implementation with chaining
  * 
@@ -55,14 +53,14 @@ public class MyHashtable extends DataStructure {
 		String[] newRecord;
 
 		String newline = "";
-		//loop through all records and add them to hashtable
+		//loop through all records and add them to hash-table
 		while ((newline = input.readLine()) != null) {
 			synchronized (this) {
 				numberOfRecs++;
 			}
 			resizeTable();
 			newRecord = newline.split(";");
-			add(new Record(newRecord)); // add to hashtable
+			add(new Record(newRecord)); // add to hash-table
 		}
 
 		input.close();

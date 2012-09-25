@@ -3,8 +3,6 @@ package capstone;
 import java.util.*;
 import java.io.IOException;
 
-import capstone.gui.AddressBookWindow;
-
 /**
  * Driver class for Address Book(Capstone project)
  * 
@@ -68,7 +66,7 @@ public class Runner {
 				break;
 			case 3:
 				//use binary-tree
-				listOfRecords = new BinaryTree();
+				listOfRecords = new BinaryTree(numRecords);
 				loadData(listOfRecords, filename, new CommandLineMonitor(listOfRecords));
 				mainMenu();
 				break;
