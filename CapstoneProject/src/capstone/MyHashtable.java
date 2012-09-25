@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import capstone.Record.SearchType;
+
 /**
  * Hash-table implementation with chaining
  * 
@@ -95,23 +97,45 @@ public class MyHashtable extends DataStructure {
 		isRandomAccess = true;
 		searchCounter = 0;
 		int code = getHash(key);
-
-		//search through chained list and add all records which match specification
 		ArrayList<Record> records = new ArrayList<Record>();
-		for (Record rec : data[code]) {
-			synchronized (this) {
-				searchCounter++;
+
+		if(Record.currentSearchType == Record.selectedSearchType){
+
+			//search through chained list and add all records which match specification			
+			for (Record rec : data[code]) {
+				synchronized (this) {
+					searchCounter++;
+				}
+
+				if (rec.getKeyValue().equals(key)) {				
+					records.add(rec);			
+				}
 			}
 
-			if (rec.getKeyValue().equals(key)) {				
-				records.add(rec);			
-			}
+			if(records.size() == 0)
+				throw new RecordNotFoundException();
+			else
+				return records;		
 		}
+		else {
+			//perform sequential search
+			for (int i = 0; i < tableSize; i++) {
+				for (Record n : data[i]) {
+					synchronized (this) {
+						walkCounter++;
+					}
+					if(n.compareTo(key) == 0){
+						records.add(n);
+					}
+				}
+			}
+			if(records.size() != 0)
+				return records;	
+				
+		}		
 		
-		if(records.size() == 0)
-			throw new RecordNotFoundException();
-		else
-			return records;		
+		// Out of while loop: implies record does not exist
+		throw new RecordNotFoundException();
 	}
 
 	//add supplied record to a hash-table

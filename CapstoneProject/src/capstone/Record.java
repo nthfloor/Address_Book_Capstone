@@ -16,6 +16,7 @@ public class Record implements Comparable<String>{
 	}
 	
 	public static SearchType currentSearchType = SearchType.PHONE;
+	public static SearchType selectedSearchType = SearchType.PHONE;
 	
 	//instance variables
 	String firstname, lastname, company, address, city, country, state, ZIP,

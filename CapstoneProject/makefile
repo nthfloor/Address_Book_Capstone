@@ -1,8 +1,11 @@
 #Nathan Floor
 
 #change these variables as needed
-SOURCE = src/
-BIN = bin/
+SOURCE = src/capstone
+GUI_SOURCE = src/casptone/gui
+BIN = bin/capstone
+GUI_BIN = bin/capstone/gui
+
 FILENAME = 350000.csv
 NUMRECS = 350000
 DRIVER = Runner
