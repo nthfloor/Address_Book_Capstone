@@ -30,13 +30,13 @@ public class GuiRunner {
 
 	private static final String[] DS_COMBO_ITEMS = { "<Select a data structure>", "SortedArray", "MyHashtable", "BinaryTree" };
 
-	public static final int FILE_SIZE = 1001; //349996
+	public static final int FILE_SIZE = 1000; //349996
 
 	public static final String FILE_NAME = "1000.csv";
 
 	private static final Object[] KEY_COMBO_ITEMS = { "PHONE", "FIRSTNAME", "LASTNAME" };
 
-	private static AddressBookWindow frame;
+	private static AddressBookWindow  frame;
 
 	private static DataStructure listOfRecords;
 
