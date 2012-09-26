@@ -15,12 +15,12 @@ public class BinaryNode {
 	BinaryNode left,right;
 
 	public BinaryNode(){
-		this(null,null,null);
+		this(null);
 	}
-	public BinaryNode(ArrayList<Record> e, BinaryNode l, BinaryNode r){
+	public BinaryNode(ArrayList<Record> e){
 		element = e;
-		left = l;
-		right = r;
+		left = null;
+		right = null;
 	}
 
 	//getters
@@ -42,5 +42,20 @@ public class BinaryNode {
 		if(right != null)
 			right.printInOrder();
 		
+	}
+	
+	public void searchInOrder(String value){
+		if(left != null)
+			left.searchInOrder(value);
+		
+		for(int i=0;i<element.size();i++){
+			if(element.get(i).compareTo(value) == 0){
+				System.out.println(element.get(i).toString());
+				BinaryTree.outputList.add(element.get(i));
+			}
+		}
+		
+		if(right != null)
+			right.searchInOrder(value);
 	}
 }

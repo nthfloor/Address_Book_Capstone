@@ -51,6 +51,7 @@ public class BinaryTree extends DataStructure{
 			newRecord = newline.split(";");
 			insert(new Record(newRecord));// add to tree
 		}
+		walkThrough();
 		System.out.println("Finished loading data into tree.");
 
 		input.close();		
@@ -62,35 +63,21 @@ public class BinaryTree extends DataStructure{
 
 	//private method for inserting records into binary tree
 	private BinaryNode insertNode(Record value,BinaryNode node){
-		//if root node
+		
 		if(node == null){
 			ArrayList<Record> temp = new ArrayList<Record>();
 			temp.add(value);
-			node = new BinaryNode(temp,null,null);
-			return node;
-		}	
-	
-		//iterate through tree to find correct position to insert new record 
-		while(node != null){
-						
-			if(value.compareTo(node.getElement().get(0).getKeyValue()) < 0){
-				node = node.left;
-			}
-			else if(value.compareTo(node.getElement().get(0).getKeyValue()) > 0){
-				node = node.right;
-			}
-			else if(value.compareTo(node.getElement().get(0).getKeyValue()) == 0){
-				//add value to node the value in this node with
-				//duplicate
-				node.element.add(value);
-			}			
-		}				
-
-		//add new node to tree
-		ArrayList<Record> temp = new ArrayList<Record>();
-		temp.add(value);
-		node = new BinaryNode(temp,null,null);
-		return node;		
+			node = new BinaryNode(temp);
+		}
+		else if(value.compareTo(node.element.get(0).getKeyValue()) < 0)
+			node.left = insertNode(value,node.left);
+		else if(value.compareTo(node.element.get(0).getKeyValue()) > 0)
+			node.right = insertNode(value,node.right);
+		else{
+			//if equal
+			node.element.add(value);			
+		}
+		return node;			
 	}
 
 	@Override
@@ -110,9 +97,19 @@ public class BinaryTree extends DataStructure{
 		isWalking = false;
 		isRandomAccess = true;
 		
-		ArrayList<Record> outputList = find(key,root);	
+		if(Record.currentSearchType == Record.selectedSearchType){
+			outputList = find(key,root);
+			
+		}
+		else{
+			//perform sequential search on non-indexed record fields
+			root.searchInOrder(key);
+			//outputList = new ArrayList<Record>();
+		}
 		
-		if(outputList == null || outputList.size() > 0)
+			
+		
+		if(outputList == null || outputList.size() == 0)
 			throw new RecordNotFoundException();
 		else 
 			return outputList;
@@ -120,18 +117,20 @@ public class BinaryTree extends DataStructure{
 	}
 	
 	private ArrayList<Record> find(String x, BinaryNode searchItem){
-		outputList = new ArrayList<Record>();
+		ArrayList<Record> temp_outputList = new ArrayList<Record>();
 		
 		while(searchItem != null){
 			if(x.compareTo(searchItem.element.get(0).getKeyValue()) < 0)
 				searchItem = searchItem.left;
 			else if(x.compareTo(searchItem.element.get(0).getKeyValue()) > 0)
 				searchItem = searchItem.right;
-			else{
-				for(int i=0;i<searchItem.element.size();i++)
-					outputList.add(searchItem.element.get(i));
+			else{				
+				for(int i=0;i<searchItem.element.size();i++){
+//					System.out.println(searchItem.element.get(i).toString());
+					temp_outputList.add(searchItem.element.get(i));
+				}
 				
-				return outputList; // match
+				return temp_outputList; // match
 			}
 		}
 		

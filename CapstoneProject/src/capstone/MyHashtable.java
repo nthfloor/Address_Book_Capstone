@@ -116,7 +116,7 @@ public class MyHashtable extends DataStructure {
 				return records;		
 		}
 		else {
-			//perform sequential search
+			//perform sequential search for non-indexed record fields
 			for (int i = 0; i < tableSize; i++) {
 				for (Record n : data[i]) {
 					synchronized (this) {
