@@ -96,20 +96,26 @@ public class MyHashtable extends DataStructure {
 		searchCounter = 0;
 		int code = getHash(key);
 		ArrayList<Record> records = new ArrayList<Record>();
+		
+		System.out.println(Record.currentSearchType+" "+code);
+		if(Record.currentSearchType == Record.SearchType.PHONE){
 
-		if(Record.currentSearchType == Record.selectedSearchType){
-
-			//search through chained list and add all records which match specification			
+			//search through chained list and add all records which match specification		
+			System.out.println(data[code].size());
 			for (Record rec : data[code]) {
+				System.out.println("Hello");
 				synchronized (this) {
 					searchCounter++;
 				}
 
-				if (rec.getKeyValue().equals(key)) {				
+				System.out.println(rec.toString()+" "+key);
+				if (rec.getKeyValue().equals(key)) {
+					System.out.println("Equals: "+rec.toString());
 					records.add(rec);			
 				}
 			}
 
+			System.out.println(records.size());
 			if(records.size() == 0)
 				throw new RecordNotFoundException();
 			else
@@ -141,9 +147,11 @@ public class MyHashtable extends DataStructure {
 		int code = getHash(newRec.getKeyValue()); // compute hash-code for indexing
 
 		// TODO what is this for?
-		if (newRec.getKeyValue().equals("615-883-8408"))
-			newRec.toString();
-
+//		if (newRec.getKeyValue().equals("615-883-8408"))
+//			newRec.toString();
+		if(newRec.getKeyValue().compareTo("734-665-7833") == 0)
+			System.out.println(newRec.toString()+" "+code);
+		
 		data[code].addFirst(newRec);
 	}
 

@@ -16,7 +16,7 @@ public class Record implements Comparable<String>{
 	}
 	
 	public static SearchType currentSearchType = SearchType.PHONE;
-	public static SearchType selectedSearchType = SearchType.PHONE;
+	public static final SearchType selectedSearchType = SearchType.PHONE;
 	
 	//instance variables
 	String firstname, lastname, company, address, city, country, state, ZIP,
@@ -62,14 +62,14 @@ public class Record implements Comparable<String>{
 	}
 
 	public String getKeyValue() {
-		if(currentSearchType == SearchType.FIRSTNAME)		
+		if(selectedSearchType == SearchType.FIRSTNAME)		
 			return firstname;
-		else if(currentSearchType == SearchType.LASTNAME)		
+		else if(selectedSearchType == SearchType.LASTNAME)		
 			return lastname;
-		else if(currentSearchType == SearchType.PHONE)		
+		else if(selectedSearchType == SearchType.PHONE)		
 			return phone;
 		else
-			return firstname;
+			return phone;
 	}
 	
 	public void setKey(SearchType type){

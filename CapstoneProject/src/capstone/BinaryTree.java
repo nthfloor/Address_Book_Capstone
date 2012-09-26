@@ -51,7 +51,7 @@ public class BinaryTree extends DataStructure{
 			newRecord = newline.split(";");
 			insert(new Record(newRecord));// add to tree
 		}
-		walkThrough();
+//		walkThrough();
 		System.out.println("Finished loading data into tree.");
 
 		input.close();		
@@ -96,6 +96,7 @@ public class BinaryTree extends DataStructure{
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
+		outputList = new ArrayList<Record>();
 		
 		if(Record.currentSearchType == Record.selectedSearchType){
 			outputList = find(key,root);

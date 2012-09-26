@@ -121,11 +121,12 @@ public class SortedArray extends DataStructure {
 				}
 			}
 		} else if (Record.currentSearchType == SearchType.FIRSTNAME) {
-			for (int i = 0; i < totalNumberOfRecs; i++) {
+			for (int i = 0; i < numberOfRecs; i++) {
 				synchronized (this) {
 					searchCounter++;
 				}
 
+				//System.out.println(sortedRecords[i]);
 				if (sortedRecords[i].getFirstnameValue().equals(searchValue)) {
 					records.add(sortedRecords[i]);
 				}
@@ -136,7 +137,7 @@ public class SortedArray extends DataStructure {
 			else
 				return records;
 		} else if (Record.currentSearchType == SearchType.LASTNAME) {
-			for (int i = 0; i < totalNumberOfRecs; i++) {
+			for (int i = 0; i < numberOfRecs; i++) {
 				synchronized (this) {
 					searchCounter++;
 				}

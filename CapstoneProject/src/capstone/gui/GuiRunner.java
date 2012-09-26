@@ -30,7 +30,7 @@ public class GuiRunner {
 
 	private static final String[] DS_COMBO_ITEMS = { "<Select a data structure>", "SortedArray", "MyHashtable", "BinaryTree" };
 
-	public static final int FILE_SIZE = 1000; //349996
+	public static final int FILE_SIZE = 1001; //349996
 
 	public static final String FILE_NAME = "1000.csv";
 
@@ -153,7 +153,7 @@ public class GuiRunner {
 					} catch (RecordNotFoundException e1) {
 						JOptionPane.showMessageDialog(frame, "Record not found.");
 						
-						return null;
+						return new ArrayList<Record>();
 					}
 				}
 				
