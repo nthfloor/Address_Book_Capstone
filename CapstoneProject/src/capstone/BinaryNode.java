@@ -48,10 +48,28 @@ public class BinaryNode {
 		if(left != null)
 			left.searchInOrder(value);
 		
-		for(int i=0;i<element.size();i++){
-			if(element.get(i).compareTo(value) == 0){
-				System.out.println(element.get(i).toString());
-				BinaryTree.outputList.add(element.get(i));
+		if(Record.currentSearchType == Record.SearchType.FIRSTNAME){
+			for(int i=0;i<element.size();i++){			
+				if(element.get(i).getFirstnameValue().equals(value)){
+					System.out.println(element.get(i).toString());
+					BinaryTree.outputList.add(element.get(i));
+				}
+			}
+		}
+		else if(Record.currentSearchType == Record.SearchType.LASTNAME){
+			for(int i=0;i<element.size();i++){			
+				if(element.get(i).getLastnameValue().equals(value)){
+					System.out.println(element.get(i).toString());
+					BinaryTree.outputList.add(element.get(i));
+				}
+			}
+		}
+		else if(Record.currentSearchType == Record.SearchType.PHONE){
+			for(int i=0;i<element.size();i++){			
+				if(element.get(i).getPhoneValue().equals(value)){
+					System.out.println(element.get(i).toString());
+					BinaryTree.outputList.add(element.get(i));
+				}
 			}
 		}
 		

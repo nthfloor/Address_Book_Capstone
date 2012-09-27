@@ -112,4 +112,8 @@ public class Record implements Comparable<String>{
 	public String getLastnameValue() {
 		return lastname;
 	}
+	
+	public String getPhoneValue(){
+		return phone;
+	}
 }

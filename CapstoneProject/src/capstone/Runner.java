@@ -209,6 +209,6 @@ public class Runner {
 	}
 
 	public static long getTimeData() {
-		return timeData;
+		return timeData/1000;
 	}
 }
