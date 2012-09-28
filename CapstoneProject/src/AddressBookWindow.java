@@ -59,7 +59,7 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 500);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -162,7 +162,6 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 
 	public void setProgress(int value) {
 //		progressPopupBar.setProgress(value);
-
 		progressBar.setValue(value);
 //		progressBar.repaint();
 	}
@@ -173,6 +172,9 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 				dataModel.add(i, records.get(i));
 			}
 		}
+	}
+	public void addToJList(String text) {
+		dataModel.add(0,text);
 	}
 
 	public Record.SearchType getSortField() {

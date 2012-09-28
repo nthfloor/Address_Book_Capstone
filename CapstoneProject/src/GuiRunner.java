@@ -25,6 +25,7 @@ public class GuiRunner {
 	public static final int FILE_SIZE = 350000; //349996
 
 	public static final String FILE_NAME = "350000.csv";
+	public static final String FILE_NAME_TREE = "350000_2.csv";
 
 	private static final Object[] KEY_COMBO_ITEMS = { "PHONE", "FIRSTNAME", "LASTNAME" };
 
@@ -80,14 +81,18 @@ public class GuiRunner {
 					@Override
 					protected Void doInBackground() throws Exception {
 						frame.setShowProgressBar(true);
-						Runner.loadData(listOfRecords, FILE_NAME, new GuiMonitor(listOfRecords, frame));
+						frame.displayTime("Loading data...");
+						if(listOfRecords instanceof BinaryTree)
+							Runner.loadData(listOfRecords, FILE_NAME_TREE, new GuiMonitor(listOfRecords, frame));
+						else
+							Runner.loadData(listOfRecords, FILE_NAME, new GuiMonitor(listOfRecords, frame));
 						return null;
 					}
 					
 					@Override
 					protected void done() {
 						frame.setShowProgressBar(false);
-						frame.displayTime("Data loaded into data structure. Time taken: " + Runner.getTimeData());
+						frame.displayTime("Data loaded into data structure. Time taken: " + Runner.getTimeData()+" seconds");
 						frame.enableComponents();
 					}
 				};
@@ -109,6 +114,7 @@ public class GuiRunner {
 				@Override
 				protected Void doInBackground() throws Exception {
 					frame.setShowProgressBar(true);
+					frame.displayTime("Performing walkthrough...");
 					Runner.walkThrough(listOfRecords, new GuiMonitor(listOfRecords, frame));
 					
 					return null;
@@ -117,7 +123,7 @@ public class GuiRunner {
 				@Override
 				protected void done() {
 					frame.setShowProgressBar(false);
-					frame.displayTime("Walked through data structure. Time taken: " + Runner.getTimeData());
+					frame.displayTime("Walked through data structure. Time taken: " + Runner.getTimeData()+" seconds");
 					frame.enableComponents();
 				}
 			};
@@ -163,7 +169,7 @@ public class GuiRunner {
 						e.printStackTrace();
 					}
 
-					frame.displayTime("Searched for records. Time taken: " + Runner.getTimeData());
+					frame.displayTime("Searched for records. Time taken: " + Runner.getTimeData()+" seconds");
 					
 					frame.enableComponents();
 				}

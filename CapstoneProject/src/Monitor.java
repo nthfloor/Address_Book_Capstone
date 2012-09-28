@@ -27,7 +27,6 @@ public abstract class Monitor extends Thread {
 
 			while (progress < 1) {
 				progress = listOfRecords.getProgress();
-				//System.out.println(progress);
 				updateProgress(progress);
 				Thread.sleep(SLEEP_INTERVAL);
 			}

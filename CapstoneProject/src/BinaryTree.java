@@ -58,8 +58,8 @@ public class BinaryTree extends DataStructure{
 	}
 
 	private void insert(Record rec){		
-		root = insertNode(rec,root);
-//		insert2(root, rec);
+//		root = insertNode(rec,root);
+		insert2(root, rec);
 	}
 
 	//private method for inserting records into binary tree
@@ -82,21 +82,31 @@ public class BinaryTree extends DataStructure{
 	}
 	
 	public void insert2(BinaryNode node, Record value) {
-        if (value.compareTo(node.element.get(0).getKeyValue()) < 0) {
+		if(node == null){
+			root = new BinaryNode(value);
+			//System.out.println("  Inserted " + value.toString() + " to left of Node " + node.element.get(0).toString());			
+		}
+		else if (value.compareTo(node.element.get(0).getKeyValue()) < 0) {
             if (node.left != null) {
                 insert2(node.left, value);
             } else {
-                System.out.println("  Inserted " + value.toString() + " to left of Node " + node.element.get(0).toString());
+                //System.out.println("  Inserted " + value.toString() + " to left of Node " + node.element.get(0).toString());
                 node.left = new BinaryNode(value);
             }
-        } else if (value.compareTo(node.element.get(0).getKeyValue()) > 0){
+        } 
+		else if (value.compareTo(node.element.get(0).getKeyValue()) > 0){
             if (node.right != null) {
                 insert2(node.right, value);
             } else {
-                System.out.println("  Inserted " + value.toString() + " to right of Node " + node.element.get(0).toString());
+                //System.out.println("  Inserted " + value.toString() + " to right of Node " + node.element.get(0).toString());
                 node.right = new BinaryNode(value);
             }
         }
+		else{
+			//if two records map to same node
+			//System.out.println("  Inserted " + value.toString() + " to right of Node " + node.element.get(0).toString());
+            node.element.add(value);
+		}
     }
 
 	@Override
@@ -118,28 +128,26 @@ public class BinaryTree extends DataStructure{
 		outputList = new ArrayList<Record>();
 		
 		if(Record.currentSearchType == Record.selectedSearchType){
-			outputList = find(key,root);
-			
+			outputList = find(key,root);			
 		}
 		else{
 			//perform sequential search on non-indexed record fields
+			System.out.println(root);
 			root.searchInOrder(key);
 			//outputList = new ArrayList<Record>();
-		}
-		
-			
+		}			
 		
 		if(outputList == null || outputList.size() == 0)
 			throw new RecordNotFoundException();
 		else 
-			return outputList;
-		
+			return outputList;		
 	}
 	
 	private ArrayList<Record> find(String x, BinaryNode searchItem){
 		ArrayList<Record> temp_outputList = new ArrayList<Record>();
 		
 		while(searchItem != null){
+			
 			if(x.compareTo(searchItem.element.get(0).getKeyValue()) < 0)
 				searchItem = searchItem.left;
 			else if(x.compareTo(searchItem.element.get(0).getKeyValue()) > 0)

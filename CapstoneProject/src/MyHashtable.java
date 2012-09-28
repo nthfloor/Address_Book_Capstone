@@ -149,8 +149,8 @@ public class MyHashtable extends DataStructure {
 		// TODO what is this for?
 //		if (newRec.getKeyValue().equals("615-883-8408"))
 //			newRec.toString();
-		if(newRec.getKeyValue().compareTo("734-665-7833") == 0)
-			System.out.println(newRec.toString()+" "+code);
+//		if(newRec.getKeyValue().compareTo("734-665-7833") == 0)
+//			System.out.println(newRec.toString()+" "+code);
 		
 		data[code].addFirst(newRec);
 	}

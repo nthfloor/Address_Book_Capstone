@@ -18,7 +18,7 @@ compile:
 
 run:
 	clear
-	@java $(RUNPARAMS) Runner 350000.csv 350000
+	@java $(RUNPARAMS) Runner 350000_2.csv 350000
 run_gui:
 	clear
 	java $(RUNPARAMS) GuiRunner

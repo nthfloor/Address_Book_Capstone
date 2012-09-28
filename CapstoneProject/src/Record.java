@@ -102,7 +102,14 @@ public class Record implements Comparable<String>{
 	@Override
 	//compare key value of record with some identifier
 	public int compareTo(String arg0) {
-		return getKeyValue().compareTo(arg0);
+		if(currentSearchType == SearchType.FIRSTNAME)		
+			return firstname.compareTo(arg0);
+		else if(currentSearchType == SearchType.LASTNAME)		
+			return lastname.compareTo(arg0);
+		else if(currentSearchType == SearchType.PHONE)		
+			return phone.compareTo(arg0);
+		else
+			return phone.compareTo(arg0);
 	}
 
 	public String getFirstnameValue() {
