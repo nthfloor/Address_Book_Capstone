@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Record calss for address book entries
+ * Binary tree class for address book entries
+ * Not self-balancing
  * 
  * Nathan Floor
  * Ryan Saunders
@@ -24,6 +25,7 @@ public class BinaryTree extends DataStructure{
 		this(0);
 	}
 	public BinaryTree(int numRecs){
+		outputList = new ArrayList<Record>();
 		root = null;
 		totalNumberOfRecs = numRecs;
 		numberOfRecs = 0;
@@ -34,6 +36,7 @@ public class BinaryTree extends DataStructure{
 	public void makeEmpty(){root = null;}
 	public BinaryNode getRoot(){return root;}	
 
+	//reads data from file specified by filename, and loads into tree structure.
 	@Override
 	public	void loadData(String filename) throws IOException, IncorrectNumberOfFieldsException {
 		isLoading = true;
@@ -51,18 +54,18 @@ public class BinaryTree extends DataStructure{
 			newRecord = newline.split(";");
 			insert(new Record(newRecord));// add to tree
 		}
-//		walkThrough();
 		System.out.println("Finished loading data into tree.");
 
 		input.close();		
 	}
+	
 
 	private void insert(Record rec){		
-//		root = insertNode(rec,root);
+		root = insertNode(rec,root);
 		insert2(root, rec);
 	}
 
-	//private method for inserting records into binary tree
+	//private method for inserting records into binary tree, uses recursion
 	private BinaryNode insertNode(Record value,BinaryNode node){
 		
 		if(node == null){
@@ -81,12 +84,13 @@ public class BinaryTree extends DataStructure{
 		return node;			
 	}
 	
-	public void insert2(BinaryNode node, Record value) {
+	//inserts records into binary tree, using recursion
+	private void insert2(BinaryNode node, Record value) {
 		if(node == null){
 			root = new BinaryNode(value);
 			//System.out.println("  Inserted " + value.toString() + " to left of Node " + node.element.get(0).toString());			
 		}
-		else if (value.compareTo(node.element.get(0).getKeyValue()) < 0) {
+		else if (value.getPhoneValue().compareTo(node.element.get(0).getKeyValue()) < 0) {
             if (node.left != null) {
                 insert2(node.left, value);
             } else {
@@ -94,7 +98,7 @@ public class BinaryTree extends DataStructure{
                 node.left = new BinaryNode(value);
             }
         } 
-		else if (value.compareTo(node.element.get(0).getKeyValue()) > 0){
+		else if (value.getPhoneValue().compareTo(node.element.get(0).getKeyValue()) > 0){
             if (node.right != null) {
                 insert2(node.right, value);
             } else {
@@ -115,24 +119,27 @@ public class BinaryTree extends DataStructure{
 		isLoading = false;
 		isWalking = true;
 		isRandomAccess = false;
-		outputList = new ArrayList<Record>();
+		walkCounter = 0;
 		
 		root.printInOrder();		
 	}
 
+	//returns result of search through tree for specified field. 
+	//either performs sequential or binary search depending on what field the search operation is being performed on.
 	@Override
 	public ArrayList<Record> getRecords(String key) throws RecordNotFoundException{
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
 		outputList = new ArrayList<Record>();
+		searchCounter = 0;
 		
 		if(Record.currentSearchType == Record.selectedSearchType){
 			outputList = find(key,root);			
 		}
 		else{
 			//perform sequential search on non-indexed record fields
-			System.out.println(root);
+			//System.out.println(root);
 			root.searchInOrder(key);
 			//outputList = new ArrayList<Record>();
 		}			
@@ -143,14 +150,17 @@ public class BinaryTree extends DataStructure{
 			return outputList;		
 	}
 	
+	//searches tree structure using iterative traversal of tree.
 	private ArrayList<Record> find(String x, BinaryNode searchItem){
 		ArrayList<Record> temp_outputList = new ArrayList<Record>();
 		
 		while(searchItem != null){
-			
-			if(x.compareTo(searchItem.element.get(0).getKeyValue()) < 0)
+			synchronized (this) {
+				searchCounter++;
+			}
+			if(x.toUpperCase().compareTo(searchItem.element.get(0).getKeyValue().toUpperCase()) < 0)
 				searchItem = searchItem.left;
-			else if(x.compareTo(searchItem.element.get(0).getKeyValue()) > 0)
+			else if(x.toUpperCase().compareTo(searchItem.element.get(0).getKeyValue().toUpperCase()) > 0)
 				searchItem = searchItem.right;
 			else{				
 				for(int i=0;i<searchItem.element.size();i++){

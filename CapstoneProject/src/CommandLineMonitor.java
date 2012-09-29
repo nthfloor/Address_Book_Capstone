@@ -1,5 +1,11 @@
 
-
+/**
+ * Command-line thread class for monitoring progress of operations in GUI interface.
+ * Inherits from abstract Monitor class
+ * 
+ * @author Nathan Floor
+ * @author Ryan Saunders
+ */
 
 public class CommandLineMonitor extends Monitor {
 	
@@ -7,6 +13,7 @@ public class CommandLineMonitor extends Monitor {
 		super(list);
 	}
 
+	//updates progress for progress bar on terminal, converting to percentage.
 	protected void updateProgress(double progress) {
 		final int width = 50; //progress bar width in chars
 		StringBuilder bar = new StringBuilder("[");

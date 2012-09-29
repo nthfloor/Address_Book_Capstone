@@ -61,26 +61,29 @@ public class Record implements Comparable<String>{
 		web = r.web;
 	}
 
+	//returns field value by which the records should be sorted or ordered.
 	public String getKeyValue() {
-		if(selectedSearchType == SearchType.FIRSTNAME)		
-			return firstname;
-		else if(selectedSearchType == SearchType.LASTNAME)		
-			return lastname;
-		else if(selectedSearchType == SearchType.PHONE)		
-			return phone;
-		else
-			return phone;
+//		if(selectedSearchType == SearchType.FIRSTNAME)		
+//			return firstname;
+//		else if(selectedSearchType == SearchType.LASTNAME)		
+//			return lastname;
+//		else if(selectedSearchType == SearchType.PHONE)		
+//			return phone;
+		
+		return phone;
 	}
 	
 	public void setKey(SearchType type){
 		currentSearchType = type;
 	}
 
+	//returns string representation of record
 	@Override
 	public String toString() {
 		return firstname + " " + lastname + " " + phone;
 	}
 
+	//compares two records for equality
 	@Override
 	public boolean equals(Object obj) {
 		Record rec = (Record) obj;
@@ -103,23 +106,26 @@ public class Record implements Comparable<String>{
 	//compare key value of record with some identifier
 	public int compareTo(String arg0) {
 		if(currentSearchType == SearchType.FIRSTNAME)		
-			return firstname.compareTo(arg0);
+			return firstname.toUpperCase().compareTo(arg0.toUpperCase());
 		else if(currentSearchType == SearchType.LASTNAME)		
-			return lastname.compareTo(arg0);
+			return lastname.toUpperCase().compareTo(arg0.toUpperCase());
 		else if(currentSearchType == SearchType.PHONE)		
-			return phone.compareTo(arg0);
+			return phone.toUpperCase().compareTo(arg0.toUpperCase());
 		else
-			return phone.compareTo(arg0);
+			return phone.toUpperCase().compareTo(arg0.toUpperCase());
 	}
 
+	//return firstname field
 	public String getFirstnameValue() {
 		return firstname;
 	}
 
+	//return lastname field
 	public String getLastnameValue() {
 		return lastname;
 	}
 	
+	//return phone number field
 	public String getPhoneValue(){
 		return phone;
 	}

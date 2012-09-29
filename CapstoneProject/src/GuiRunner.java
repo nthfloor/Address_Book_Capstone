@@ -13,6 +13,7 @@ import javax.swing.SwingWorker;
 
 /**
  * GUI driver class for Address Book (Capstone project)
+ * Manages graphical interface for program
  * 
  * @author Nathan Floor
  * @author Ryan Saunders
@@ -53,6 +54,7 @@ public class GuiRunner {
 		});
 	}
 
+	//manages the selection of a data structure and the subsequent loading of data into that data structure. 
 	private static class DSComboListener implements ItemListener {
 
 		public DSComboListener() {
@@ -64,12 +66,12 @@ public class GuiRunner {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 
 				frame.disableComponents();
-				
+				listOfRecords = null;
 				if (e.getItem().toString().equals("SortedArray")) {
 					listOfRecords = new SortedArray(FILE_SIZE);
 				} else if (e.getItem().toString().equals("MyHashtable")) {
 					listOfRecords = new MyHashtable(FILE_SIZE);
-				} else if (e.getItem().toString().equals("BinaryTree")) {
+				} else if (e.getItem().toString().equals("BinaryTree")) {					
 					listOfRecords = new BinaryTree(FILE_SIZE);
 				} else {
 					return;
@@ -81,18 +83,23 @@ public class GuiRunner {
 					@Override
 					protected Void doInBackground() throws Exception {
 						frame.setShowProgressBar(true);
-						frame.displayTime("Loading data...");
-						if(listOfRecords instanceof BinaryTree)
+						frame.updateProgressLabel("Loading data...");
+						if(listOfRecords instanceof BinaryTree){
+							System.out.println(FILE_NAME_TREE+" "+Record.currentSearchType+" "+Record.selectedSearchType);
+							System.out.println(((BinaryTree) listOfRecords).isEmpty());
 							Runner.loadData(listOfRecords, FILE_NAME_TREE, new GuiMonitor(listOfRecords, frame));
-						else
+						}
+						else{
+							System.out.println(FILE_NAME+" "+Record.currentSearchType+" "+Record.selectedSearchType);
 							Runner.loadData(listOfRecords, FILE_NAME, new GuiMonitor(listOfRecords, frame));
+						}
 						return null;
 					}
 					
 					@Override
 					protected void done() {
 						frame.setShowProgressBar(false);
-						frame.displayTime("Data loaded into data structure. Time taken: " + Runner.getTimeData()+" seconds");
+						frame.updateProgressLabel("Data loaded into data structure. Time taken: " + Runner.getTimeData()+" seconds");
 						frame.enableComponents();
 					}
 				};
@@ -102,6 +109,7 @@ public class GuiRunner {
 
 	}
 
+	//manages sequential walkthrough
 	private static class WalkBtnListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
@@ -114,7 +122,7 @@ public class GuiRunner {
 				@Override
 				protected Void doInBackground() throws Exception {
 					frame.setShowProgressBar(true);
-					frame.displayTime("Performing walkthrough...");
+					frame.updateProgressLabel("Performing walkthrough...");
 					Runner.walkThrough(listOfRecords, new GuiMonitor(listOfRecords, frame));
 					
 					return null;
@@ -123,7 +131,7 @@ public class GuiRunner {
 				@Override
 				protected void done() {
 					frame.setShowProgressBar(false);
-					frame.displayTime("Walked through data structure. Time taken: " + Runner.getTimeData()+" seconds");
+					frame.updateProgressLabel("Walked through data structure. Time taken: " + Runner.getTimeData()+" seconds");
 					frame.enableComponents();
 				}
 			};
@@ -131,11 +139,14 @@ public class GuiRunner {
 		}
 	}
 
+	//manages the selection of search field filter and search parameter
+	//all records matching parameter are then displayed in list view
 	private static class SearchBtnListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			frame.disableComponents();
 			Record.currentSearchType = frame.getSortField();
+			System.out.println(Record.currentSearchType);
 			
 			frame.clearJList();
 			
@@ -147,6 +158,7 @@ public class GuiRunner {
 					frame.setShowProgressBar(true);
 
 					try {
+						System.out.println(frame.getSearchTerm()+" "+Record.currentSearchType+" "+Record.selectedSearchType);
 						return Runner.getRecords(listOfRecords, frame.getSearchTerm(), new GuiMonitor(listOfRecords, frame));
 					} catch (RecordNotFoundException e1) {
 						JOptionPane.showMessageDialog(frame, "Record not found.");
@@ -169,7 +181,7 @@ public class GuiRunner {
 						e.printStackTrace();
 					}
 
-					frame.displayTime("Searched for records. Time taken: " + Runner.getTimeData()+" seconds");
+					frame.updateProgressLabel("Searched for records. Time taken: " + Runner.getTimeData()+" seconds");
 					
 					frame.enableComponents();
 				}

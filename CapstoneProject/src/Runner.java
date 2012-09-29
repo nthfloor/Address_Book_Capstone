@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * Driver class for Address Book(Capstone project)
+ * Manages command line interface and all the major operations such as loading data, random access and sequential walkthroughs
  * 
  * @author Nathan Floor
  * @author Ryan Saunders
@@ -34,7 +35,7 @@ public class Runner {
 		selectDataStructure();
 	}
 
-	//main menu
+	//command line data structure selection interface
 	private static void selectDataStructure() {
 		listOfRecords = null;
 		while (true) {
@@ -77,6 +78,7 @@ public class Runner {
 		}
 	}
 
+	//manages loading of data, with timers and progress monitors
 	public synchronized static void loadData(DataStructure listOfRecords, String filename, Monitor progressThread) {
 		timeData = -1;
 		progressThread.start();
@@ -105,6 +107,7 @@ public class Runner {
 		}
 	}
 
+	//main menu interface
 	private static void mainMenu() {
 		while (true) {
 			System.out.println("");
@@ -146,6 +149,7 @@ public class Runner {
 		}//end while
 	}
 
+	//manages sequential walkthrough with timers and progress monitors
 	public static void walkThrough(DataStructure listOfRecords, Monitor progressThread) {
 		timeData = -1;
 		progressThread.start();
@@ -169,6 +173,7 @@ public class Runner {
 		}
 	}
 
+	//performs search operation with timers and progress monitors
 	public static ArrayList<Record> getRecords(DataStructure listOfRecords, String searchPhone, Monitor progressThread) throws RecordNotFoundException {
 		timeData = -1;
 		progressThread.start();
@@ -209,6 +214,7 @@ public class Runner {
 		}
 	}
 
+	//returns time taken in seconds for latest operation
 	public static long getTimeData() {
 		return timeData/1000;
 	}

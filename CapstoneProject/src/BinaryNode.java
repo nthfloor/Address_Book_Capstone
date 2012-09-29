@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 
 /**
- * Node class for binarytree implementation
+ * Node class for binary tree implementation
  * 
  * Nathan Floor
  * Ryan Saunders
@@ -39,41 +39,52 @@ public class BinaryNode {
 	public void setLeft(BinaryNode l){left = l;}
 	public void setRight(BinaryNode r){right = r;}
 	
+	//print records in tree to standard output in-order
 	public void printInOrder(){
 		if(left != null)
 			left.printInOrder();
 		//print record
-		System.out.println(element.toString());
-		//BinaryTree.outputList.add(element);		
+		//System.out.println(element.toString());
+		for(int i=0;i<element.size();i++){
+			synchronized (this) {
+				BinaryTree.walkCounter++;
+			}
+			element.get(i).toString();	
+		}
+		
 		if(right != null)
 			right.printInOrder();
 		
 	}
 	
+	//search through tree with in-order traversal
 	public void searchInOrder(String value){
 		if(left != null)
 			left.searchInOrder(value);
 		
+		synchronized (this) {
+			BinaryTree.searchCounter++;
+		}
 		if(Record.currentSearchType == Record.SearchType.FIRSTNAME){
 			for(int i=0;i<element.size();i++){			
-				if(element.get(i).getFirstnameValue().equals(value)){
-					System.out.println(element.get(i).toString());
+				if(element.get(i).getFirstnameValue().toUpperCase().equals(value.toUpperCase())){
+					//System.out.println(element.get(i).toString());
 					BinaryTree.outputList.add(element.get(i));
 				}
 			}
 		}
 		else if(Record.currentSearchType == Record.SearchType.LASTNAME){
 			for(int i=0;i<element.size();i++){			
-				if(element.get(i).getLastnameValue().equals(value)){
-					System.out.println(element.get(i).toString());
+				if(element.get(i).getLastnameValue().toUpperCase().equals(value.toUpperCase())){
+					//System.out.println(element.get(i).toString());
 					BinaryTree.outputList.add(element.get(i));
 				}
 			}
 		}
 		else if(Record.currentSearchType == Record.SearchType.PHONE){
 			for(int i=0;i<element.size();i++){			
-				if(element.get(i).getPhoneValue().equals(value)){
-					System.out.println(element.get(i).toString());
+				if(element.get(i).getPhoneValue().toUpperCase().equals(value.toUpperCase())){
+					//System.out.println(element.get(i).toString());
 					BinaryTree.outputList.add(element.get(i));
 				}
 			}

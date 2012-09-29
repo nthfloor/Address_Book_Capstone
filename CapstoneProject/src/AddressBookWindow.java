@@ -29,7 +29,8 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 
 /**
- * GUI class for Address Book (Capstone project)
+ * GUI window class for Address Book (Capstone project)
+ * Initializes and creates the graphical window using swing classes. 
  * 
  * @author Nathan Floor
  * @author Ryan Saunders
@@ -53,7 +54,7 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 //	private int numberOfRecords = 0;
 
 	/**
-	 * Create the frame.
+	 * Initializes and Creates the window frame.
 	 */
 	public AddressBookWindow(ItemListener datastructureComboListener, Object[] datastructureComboItems, ActionListener walkBtnListener, ActionListener searchBtnListener, Object[] keyComboItems) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -160,12 +161,14 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		searchTextField.setEnabled(false);
 	}
 
+	//updates the progress bar value to give feed-back on the progress of current operation
 	public void setProgress(int value) {
 //		progressPopupBar.setProgress(value);
 		progressBar.setValue(value);
 //		progressBar.repaint();
 	}
 
+	//updates what is being displayed in the list window/panel. 
 	public void addToJList(ArrayList<Record> records) {
 		if (records != null) {
 			for (int i = 0; i < records.size(); i++) {
@@ -177,6 +180,7 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 		dataModel.add(0,text);
 	}
 
+	//returns the field that has been selected on which to perform the search operation
 	public Record.SearchType getSortField() {
 		if (keyComboBox.getSelectedItem().equals("PHONE"))
 			return Record.SearchType.PHONE;
@@ -188,15 +192,18 @@ public class AddressBookWindow extends JFrame implements ProgressUpdater {
 			return null;
 	}
 
+	//clears list window
 	public void clearJList() {
 		dataModel.clear();
 	}
 
+	//toggle between displaying progress bar or not
 	public void setShowProgressBar(boolean show) {
 		progressBar.setVisible(show);
 	}
 
-	public void displayTime(String timeInfo) {
+	//updates what gets displayed on the label below the progress bar, usually time information.
+	public void updateProgressLabel(String timeInfo) {
 		statusBar.setText(timeInfo);
 	}
 

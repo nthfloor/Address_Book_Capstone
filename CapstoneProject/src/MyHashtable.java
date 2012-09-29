@@ -64,10 +64,9 @@ public class MyHashtable extends DataStructure {
 		}
 
 		input.close();
-
 	}
 
-	//perform walk-through all, with timers
+	//perform sequential walk-through all records
 	@SuppressWarnings("unused")
 	@Override
 	public void walkThrough() {
@@ -87,7 +86,7 @@ public class MyHashtable extends DataStructure {
 		}
 	}
 
-	//return random access to a record, with timers 
+	//return random search access to a record
 	@Override
 	public ArrayList<Record> getRecords(String key) throws RecordNotFoundException {
 		isLoading = false;
@@ -101,21 +100,21 @@ public class MyHashtable extends DataStructure {
 		if(Record.currentSearchType == Record.SearchType.PHONE){
 
 			//search through chained list and add all records which match specification		
-			System.out.println(data[code].size());
+			//System.out.println(data[code].size());
 			for (Record rec : data[code]) {
-				System.out.println("Hello");
+				//System.out.println("Hello");
 				synchronized (this) {
 					searchCounter++;
 				}
 
-				System.out.println(rec.toString()+" "+key);
-				if (rec.getKeyValue().equals(key)) {
+				//System.out.println(rec.toString()+" "+key);
+				if (rec.getKeyValue().toUpperCase().equals(key.toUpperCase())) {
 					System.out.println("Equals: "+rec.toString());
 					records.add(rec);			
 				}
 			}
 
-			System.out.println(records.size());
+			//System.out.println(records.size());
 			if(records.size() == 0)
 				throw new RecordNotFoundException();
 			else
@@ -145,12 +144,6 @@ public class MyHashtable extends DataStructure {
 	//add supplied record to a hash-table
 	public void add(Record newRec) {
 		int code = getHash(newRec.getKeyValue()); // compute hash-code for indexing
-
-		// TODO what is this for?
-//		if (newRec.getKeyValue().equals("615-883-8408"))
-//			newRec.toString();
-//		if(newRec.getKeyValue().compareTo("734-665-7833") == 0)
-//			System.out.println(newRec.toString()+" "+code);
 		
 		data[code].addFirst(newRec);
 	}

@@ -16,8 +16,8 @@ public abstract class DataStructure {
 	//progress variables
 	protected volatile int numberOfRecs = 0;
 	protected int totalNumberOfRecs;
-	protected volatile int walkCounter = 0;
-	protected volatile int searchCounter = 0;
+	protected static volatile int walkCounter = 0;
+	protected static volatile int searchCounter = 0;
 	protected boolean isLoading = false;
 	protected boolean isWalking = false;
 	protected boolean isRandomAccess = false;

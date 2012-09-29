@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class SortedArray extends DataStructure {
 	//instance variables
-	//table variables
 	private Record[] sortedRecords;
 
 	/**
@@ -26,6 +25,7 @@ public class SortedArray extends DataStructure {
 		totalNumberOfRecs = size;
 	}
 
+	//loads data into array from text file
 	@Override
 	public void loadData(String filename) throws IncorrectNumberOfFieldsException, IOException {
 		isLoading = true;
@@ -70,6 +70,7 @@ public class SortedArray extends DataStructure {
 
 	}
 
+	//performs sequential walk-through array
 	@Override
 	public void walkThrough() {
 		isLoading = false;
@@ -84,6 +85,7 @@ public class SortedArray extends DataStructure {
 		}
 	}
 
+	//random access search operation for records matching search value
 	@Override
 	public ArrayList<Record> getRecords(String searchValue) throws RecordNotFoundException {
 		ArrayList<Record> records = new ArrayList<Record>();
@@ -91,6 +93,7 @@ public class SortedArray extends DataStructure {
 		isLoading = false;
 		isWalking = false;
 		isRandomAccess = true;
+		searchCounter = 0;
 
 		if (Record.currentSearchType == Record.SearchType.PHONE) {
 			int lower = 0;
@@ -104,7 +107,7 @@ public class SortedArray extends DataStructure {
 
 				mid = (higher + lower) / 2;
 
-				if (searchValue.equals(sortedRecords[mid].getKeyValue())) { // record found	
+				if (searchValue.toUpperCase().equals(sortedRecords[mid].getKeyValue().toUpperCase())) { // record found	
 
 					int i = mid;
 					do {
@@ -126,7 +129,7 @@ public class SortedArray extends DataStructure {
 				}
 
 				//System.out.println(sortedRecords[i]);
-				if (sortedRecords[i].getFirstnameValue().equals(searchValue)) {
+				if (sortedRecords[i].getFirstnameValue().toUpperCase().equals(searchValue.toUpperCase())) {
 					records.add(sortedRecords[i]);
 				}
 			}
@@ -141,7 +144,7 @@ public class SortedArray extends DataStructure {
 					searchCounter++;
 				}
 
-				if (sortedRecords[i].getLastnameValue().equals(searchValue)) {
+				if (sortedRecords[i].getLastnameValue().toUpperCase().equals(searchValue.toUpperCase())) {
 					records.add(sortedRecords[i]);
 				}
 			}
