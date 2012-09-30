@@ -1,7 +1,12 @@
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-
+/**
+ * Unit tests for the MyHashtable class.
+ * 
+ * @author Nathan Floor
+ * @author Ryan Saunders
+ */
 public class MyHashtableTest extends DataStructureTest {
 	
 	private static DataStructure ds; // The data structure being tested

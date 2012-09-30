@@ -1,6 +1,12 @@
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+/**
+ * Unit tests for the SortedArray class.
+ * 
+ * @author Nathan Floor
+ * @author Ryan Saunders
+ */
 public class SortedArrayTest extends DataStructureTest {
 
 	private static DataStructure ds; // The data structure being tested

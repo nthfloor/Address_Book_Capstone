@@ -5,17 +5,23 @@ import static org.junit.Assert.assertNotSame;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Unit tests for the Record class.
+ * 
+ * @author Nathan Floor
+ * @author Ryan Saunders
+ */
 public class RecordTest {
 
 	private static Record record1;
 	private static Record record2;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-
-	}
-
-	private Record createExampleRecord1() throws IncorrectNumberOfFieldsException {
+	/** 
+	 * @returns an example record
+	 * 
+	 * @throws IncorrectNumberOfFieldsException
+	 */
+	private Record createExampleRecord() throws IncorrectNumberOfFieldsException {
 		String[] fields = new String[12];
 		fields[0] = "Wallace";
 		fields[1] = "Coggins";
@@ -33,16 +39,26 @@ public class RecordTest {
 		return new Record(fields);
 	}
 
+	/**
+	 * Tests the primary constructor of the Record class
+	 * 
+	 * @throws IncorrectNumberOfFieldsException
+	 */
 	@Test
 	public final void testConstructor() throws IncorrectNumberOfFieldsException {
-		record1 = createExampleRecord1();
+		record1 = createExampleRecord();
 
 		assertEquals("734-665-7833", record1.getKeyValue());
 	}
 
+	/**
+	 * Tests the copy constructor of the Record class
+	 * 
+	 * @throws IncorrectNumberOfFieldsException
+	 */
 	@Test
 	public final void testCopyConstructorAndEqualsMethod() throws IncorrectNumberOfFieldsException {
-		record1 = createExampleRecord1();
+		record1 = createExampleRecord();
 
 		record2 = new Record(record1);
 
@@ -58,7 +74,7 @@ public class RecordTest {
 		assertNotSame(record1, record2);
 		assertFalse(record1.equals(record2));
 
-		record2 = createExampleRecord1();
+		record2 = createExampleRecord();
 
 		assertEquals("734-665-7833", record1.getKeyValue());
 		assertEquals("734-665-7833", record2.getKeyValue());
