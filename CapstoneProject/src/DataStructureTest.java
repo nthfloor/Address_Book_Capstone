@@ -12,29 +12,43 @@ import org.junit.Test;
  * @author Ryan Saunders
  */
 public abstract class DataStructureTest {
-	//Wallace;Coggins;Goodyear Auto Service Centers;1011 N University Ave;Ann Arbor;Washtenaw;MI;48109;734-665-7833;734-665-8136;wallace@coggins.com;http://www.wallacecoggins.com
+	// A phone number that matches the following record:
+	// Wallace;Coggins;Goodyear Auto Service Centers;1011 N University Ave;Ann Arbor;Washtenaw;MI;48109;734-665-7833;734-665-8136;wallace@coggins.com;http://www.wallacecoggins.com
 	protected static final String DEFAULT_PHONE_1 = "734-665-7833";
 
-	//Alicia;Donez;Esp Sales;2000 K St Nw;Washington;District of Columbia;DC;20006;202-223-0386;202-223-0403;alicia@donez.com;http://www.aliciadonez.com
+	// A phone number that matches the following record:
+	// Alicia;Donez;Esp Sales;2000 K St Nw;Washington;District of Columbia;DC;20006;202-223-0386;202-223-0403;alicia@donez.com;http://www.aliciadonez.com
 	protected static final String DEFAULT_PHONE_2 = "202-223-0386";
 
+	// A surname that matches the following records:
 	//Kasey;Rollie;Universal City Studios Inc;1 Exchange Pl;Jersey City;Hudson;NJ;7302;201-200-0785;201-200-9759;kasey@rollie.com;http://www.kaseyrollie.com
 	//Hattie;Rollie;Cranes;123 Meadow Pl;Lewisville;Denton;TX;75067;972-221-2207;972-221-0982;hattie@rollie.com;http://www.hattierollie.com
 	protected static final String DEFAULT_LASTNAME = "Rollie";
 	
+	// A surname that matches the following records:
 	//Terrell;Delap;Rehab New England Inc;Ft;Jersey City;Hudson;NJ;7305;201-200-1425;201-200-4077;terrell@delap.com;http://www.terrelldelap.com
+	// ...
 	protected static final String DEFAULT_FIRSTNAME = "Terrell";
 	
+	// A string that does not match any record
 	protected static final String NONSENSE_STRING = "abcxyz321";
 	
-	protected static final String DEFAULT_DATA_FILE = "350000.csv";
+	protected static final String DEFAULT_DATA_FILE = "350000.csv"; // The default file to load
 	
-	protected static final int DS_SIZE = 349996;
+	protected static final int DS_SIZE = 349996; // The default file size
 	
 	protected static String dataFile;
 
+	/**
+	 * Returns the data structure being tested
+	 */
 	protected abstract DataStructure getDataStructure();
 
+	/**
+	 * Tests the loadData() method corresponding to the data structure
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void loadDataStructure() throws IOException {
 		
@@ -44,7 +58,9 @@ public abstract class DataStructureTest {
 		assertEquals(1.0, ds.getProgress(), 0);
 	}
 
-
+	/**
+	 * Tests the walkThrough() method corresponding to the data structure 
+	 */
 	@Test
 	public final void testWalkThrough() {
 		
@@ -54,6 +70,9 @@ public abstract class DataStructureTest {
 		assertEquals(1.0, ds.getProgress(), 0.001);
 	}
 
+	/**
+	 * Tests the getRecords() method, when search type is set to "Phone"
+	 */
 	@Test
 	public final void testGetRecordsByPhone() {
 		
@@ -80,6 +99,9 @@ public abstract class DataStructureTest {
 		testSearchForNonexistentRecord(ds);
 	}
 
+	/**
+	 * Tests the getRecords() method, when search type is set to "Lastname"
+	 */
 	@Test
 	public final void testGetRecordsByLastname() {
 		
@@ -101,6 +123,9 @@ public abstract class DataStructureTest {
 		testSearchForNonexistentRecord(ds);
 	}
 	
+	/**
+	 * Tests the getRecords() method, when search type is set to "Firstname"
+	 */
 	@Test
 	public final void testGetRecordsByFirstname() {
 		
@@ -124,6 +149,11 @@ public abstract class DataStructureTest {
 		testSearchForNonexistentRecord(ds);
 	}
 
+	/**
+	 * Ensures that a RecordNotFoundException is thrown when searching for a non-existent record.
+	 * 
+	 * @param ds - the data struture being tested
+	 */
 	private void testSearchForNonexistentRecord(DataStructure ds) {
 		// Test search for non-existent record
 		ArrayList<Record> list3 = null;
@@ -137,6 +167,9 @@ public abstract class DataStructureTest {
 		}
 	}
 
+	/**
+	 * @returns Wallace Coggins' record
+	 */
 	private Record sampleRecord1() {
 		String[] fields = new String[12];
 		fields[0] = "Wallace";
@@ -155,6 +188,9 @@ public abstract class DataStructureTest {
 		return new Record(fields);
 	}
 
+	/**
+	 * @returns Alicia Donez's record
+	 */
 	private Record sampleRecord2() {
 		String[] fields = new String[12];
 
@@ -174,6 +210,9 @@ public abstract class DataStructureTest {
 		return new Record(fields);
 	}
 
+	/**
+	 * @returns all records where surname="Rollie"
+	 */
 	private ArrayList<Record> listOfRollieRecords() {
 		ArrayList<Record> list = new ArrayList<Record>();
 
@@ -212,6 +251,9 @@ public abstract class DataStructureTest {
 		return list;
 	}
 	
+	/**
+	 * @returns two records where firstname="Terrell"
+	 */
 	private ArrayList<Record> listOfTerrellRecords() {
 		ArrayList<Record> list = new ArrayList<Record>();
 
@@ -249,33 +291,4 @@ public abstract class DataStructureTest {
 
 		return list;
 	}
-
-	
-	/**
-	 * Test method for {@link capstone.datastructures.SortedArray#getRecord(int)}.
-	 */
-	/*
-	@Test
-	public final void testSortedArrayGetRecordInt() throws IOException {
-		if (!loadedSortedArray)
-			loadSortedArrayWithTimers();
-
-		String[] fields = new String[12];
-
-		fields[0] = "Monica";
-		fields[1] = "Mews";
-		fields[2] = "Safeguard Business Systems";
-		fields[3] = "111 Pavonia Ave";
-		fields[4] = "Jersey City";
-		fields[5] = "Hudson";
-		fields[6] = "NJ";
-		fields[7] = "7310";
-		fields[8] = "201-222-5071";
-		fields[9] = "201-222-4641";
-		fields[10] = "monica@mews.com";
-		fields[11] = "http://www.monicamews.com";
-
-		assertEquals(new Record(fields), ((SortedArray) sortedArray).getRecord(20));
-	}
-	*/
 }
