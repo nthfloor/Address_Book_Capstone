@@ -1,6 +1,4 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +21,11 @@ public abstract class DataStructureTest {
 	//Kasey;Rollie;Universal City Studios Inc;1 Exchange Pl;Jersey City;Hudson;NJ;7302;201-200-0785;201-200-9759;kasey@rollie.com;http://www.kaseyrollie.com
 	//Hattie;Rollie;Cranes;123 Meadow Pl;Lewisville;Denton;TX;75067;972-221-2207;972-221-0982;hattie@rollie.com;http://www.hattierollie.com
 	protected static final String DEFAULT_LASTNAME = "Rollie";
+	
+	//Terrell;Delap;Rehab New England Inc;Ft;Jersey City;Hudson;NJ;7305;201-200-1425;201-200-4077;terrell@delap.com;http://www.terrelldelap.com
+	protected static final String DEFAULT_FIRSTNAME = "Terrell";
+	
+	protected static final String NONSENSE_STRING = "abcxyz321";
 	
 	protected static final String DEFAULT_DATA_FILE = "350000.csv";
 	
@@ -51,53 +54,90 @@ public abstract class DataStructureTest {
 		assertEquals(1.0, ds.getProgress(), 0.001);
 	}
 
-	// Tests getRecords() for a list containing one element
 	@Test
-	public final void testGetSingleRecord() {
+	public final void testGetRecordsByPhone() {
 		
 		DataStructure ds = getDataStructure();
+		
+		Record.currentSearchType = Record.SearchType.PHONE;
+		
+		ArrayList<Record> list1 = new ArrayList<Record>();
+		list1.add(sampleRecord1());
 
+		ArrayList<Record> list2 = new ArrayList<Record>();
+		list2.add(sampleRecord2());
+		
 		try {
-			Record.currentSearchType = Record.SearchType.PHONE;
-			ArrayList<Record> list1 = new ArrayList<Record>();
-			list1.add(testRecord1());
 			assertEquals(list1, ds.getRecords(DEFAULT_PHONE_1));
-
-			ArrayList<Record> list2 = new ArrayList<Record>();
-			list2.add(testRecord2());
 			assertEquals(list2, ds.getRecords(DEFAULT_PHONE_2));
 		} catch (RecordNotFoundException e) {
+			// This block should not be reached
+			
 			e.printStackTrace();
 			fail();
 		}
+
+		testSearchForNonexistentRecord(ds);
 	}
 
-	
-	// Tests getRecords() for a list containing two elements
 	@Test
-	public final void testGetMultiRecords() {
+	public final void testGetRecordsByLastname() {
 		
 		DataStructure ds = getDataStructure();
+		Record.currentSearchType = Record.SearchType.LASTNAME;
+
+		ArrayList<Record> list = listOfRollieRecords();
 
 		try {
-			ArrayList<Record> listWithTwoElements = listWithTwo();
-			Record.currentSearchType = Record.SearchType.LASTNAME;
-
-			System.out.println(listWithTwoElements.get(0).equals(ds.getRecords(DEFAULT_LASTNAME).get(0)));
-			System.out.println(listWithTwoElements.get(1).equals(ds.getRecords(DEFAULT_LASTNAME).get(1)));
 			ArrayList<Record> r = ds.getRecords(DEFAULT_LASTNAME);
 			
-			for (Record rec: listWithTwoElements){
+			for (Record rec: list){
 				assertTrue(r.contains(rec));
 			}
-			
-//			assertEquals(listWithTwoElements, r);
 		} catch (RecordNotFoundException e) {
 			fail();			
 		}
+		
+		testSearchForNonexistentRecord(ds);
+	}
+	
+	@Test
+	public final void testGetRecordsByFirstname() {
+		
+		DataStructure ds = getDataStructure();
+		Record.currentSearchType = Record.SearchType.FIRSTNAME;
+
+		ArrayList<Record> list = listOfTerrellRecords();
+		
+		try {
+			ArrayList<Record> r = ds.getRecords(DEFAULT_FIRSTNAME);
+			
+			for (Record rec: list){
+				assertTrue(r.contains(rec));
+			}
+			
+			assertEquals(126, r.size());
+		} catch (RecordNotFoundException e) {
+			fail();			
+		}
+
+		testSearchForNonexistentRecord(ds);
 	}
 
-	private Record testRecord1() {
+	private void testSearchForNonexistentRecord(DataStructure ds) {
+		// Test search for non-existent record
+		ArrayList<Record> list3 = null;
+		try {
+			list3 = ds.getRecords(NONSENSE_STRING);
+			
+			// The preceding line should throw an exception, so this line should not be reached
+			fail();
+		} catch (RecordNotFoundException e) {
+			assertNull(list3);
+		}
+	}
+
+	private Record sampleRecord1() {
 		String[] fields = new String[12];
 		fields[0] = "Wallace";
 		fields[1] = "Coggins";
@@ -115,7 +155,7 @@ public abstract class DataStructureTest {
 		return new Record(fields);
 	}
 
-	private Record testRecord2() {
+	private Record sampleRecord2() {
 		String[] fields = new String[12];
 
 		fields[0] = "Alicia";
@@ -134,7 +174,7 @@ public abstract class DataStructureTest {
 		return new Record(fields);
 	}
 
-	private ArrayList<Record> listWithTwo() {
+	private ArrayList<Record> listOfRollieRecords() {
 		ArrayList<Record> list = new ArrayList<Record>();
 
 		String[] fields = new String[12];
@@ -166,6 +206,44 @@ public abstract class DataStructureTest {
 		fields[9] = "972-221-0982";
 		fields[10] = "hattie@rollie.com";
 		fields[11] = "http://www.hattierollie.com";
+
+		list.add(new Record(fields));
+
+		return list;
+	}
+	
+	private ArrayList<Record> listOfTerrellRecords() {
+		ArrayList<Record> list = new ArrayList<Record>();
+
+		String[] fields = new String[12];
+
+		fields[0] = "Terrell";
+		fields[1] = "Delap";
+		fields[2] = "Rehab New England Inc";
+		fields[3] = "Ft";
+		fields[4] = "Jersey City";
+		fields[5] = "Hudson";
+		fields[6] = "NJ";
+		fields[7] = "7305";
+		fields[8] = "201-200-1425";
+		fields[9] = "201-200-4077";
+		fields[10] = "terrell@delap.com";
+		fields[11] = "http://www.terrelldelap.com";
+
+		list.add(new Record(fields));
+
+		fields[0] = "Terrell";
+		fields[1] = "Shedrick";
+		fields[2] = "Courter Quinn Doran & Anderson";
+		fields[3] = "755 W Side Ave";
+		fields[4] = "Jersey City";
+		fields[5] = "Hudson";
+		fields[6] = "NJ";
+		fields[7] = "7306";
+		fields[8] = "201-332-5204";
+		fields[9] = "201-332-7908";
+		fields[10] = "terrell@shedrick.com";
+		fields[11] = "http://www.terrellshedrick.com";
 
 		list.add(new Record(fields));
 

@@ -1,6 +1,5 @@
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 
 public class MyHashtableTest extends DataStructureTest {
